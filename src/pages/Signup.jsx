@@ -10,7 +10,7 @@ export default function Signup({ authenticate }) {
     username: "",
     password: "",
   });
-  const { username, password } = form;
+  const { username, email, password } = form;
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
@@ -23,6 +23,7 @@ export default function Signup({ authenticate }) {
     event.preventDefault();
     const credentials = {
       username,
+      email,
       password,
     };
     signup(credentials).then((res) => {
@@ -49,8 +50,19 @@ export default function Signup({ authenticate }) {
           id="input-username"
           type="text"
           name="username"
-          placeholder="Text"
+          placeholder="JohnDoe"
           value={username}
+          onChange={handleInputChange}
+          required
+        />
+
+        <label htmlFor="input-email">Email</label>
+        <input
+          id="input-email"
+          type="text"
+          name="email"
+          placeholder="john@doe.com"
+          value={email}
           onChange={handleInputChange}
           required
         />
