@@ -1,13 +1,28 @@
 import React, { useState } from "react";
 import { signup } from "../services/auth";
 import { useNavigate } from "react-router-dom";
-import "./auth.css";
 import * as PATHS from "../utils/paths";
 import * as USER_HELPERS from "../utils/userToken";
+import {
+  Flex,
+  Stack,
+  Heading,
+  FormControl,
+  Input,
+  InputGroup,
+  InputLeftAddon,
+  Button,
+  Container,
+  Text,
+  Link
+} from "@chakra-ui/react";
+import { Link as ReactDomLink } from "react-router-dom";
+
 
 export default function Signup({ authenticate }) {
   const [form, setForm] = useState({
     username: "",
+    email: "",
     password: "",
   });
   const { username, email, password } = form;
@@ -42,54 +57,66 @@ export default function Signup({ authenticate }) {
   }
 
   return (
-    <div>
-      <h1>Sign Up</h1>
-      <form onSubmit={handleFormSubmission} className="auth__form">
-        <label htmlFor="input-username">Username</label>
-        <input
-          id="input-username"
-          type="text"
-          name="username"
-          placeholder="JohnDoe"
-          value={username}
-          onChange={handleInputChange}
-          required
-        />
+    <Flex justify="center" align="center" direction="column">
+      <Stack spacing="9">
+        <Heading size="2xl">Sign up</Heading>
+        <Container borderWidth="1px" p="5">
+          <form onSubmit={handleFormSubmission}>
+            <Stack spacing="5">
+              <InputGroup>
+                <InputLeftAddon children="Username" />
+                <Input
+                  type="text"
+                  name="username"
+                  placeholder="JohnDoe"
+                  value={username}
+                  onChange={handleInputChange}
+                  isRequired
+                />
+              </InputGroup>
 
-        <label htmlFor="input-email">Email</label>
-        <input
-          id="input-email"
-          type="text"
-          name="email"
-          placeholder="john@doe.com"
-          value={email}
-          onChange={handleInputChange}
-          required
-        />
+              <InputGroup>
+                <InputLeftAddon children="Email" />
+                <Input
+                  type="text"
+                  name="email"
+                  placeholder="john@doe.com"
+                  value={email}
+                  onChange={handleInputChange}
+                  isRequired
+                />
+              </InputGroup>
 
-        <label htmlFor="input-password">Password</label>
-        <input
-          id="input-password"
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={password}
-          onChange={handleInputChange}
-          required
-          minLength="8"
-        />
+              <InputGroup>
+                <InputLeftAddon children="Password" />
+                <Input
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={handleInputChange}
+                  isRequired
+                  minLength="8"
+                />
+              </InputGroup>
 
-        {error && (
-          <div className="error-block">
-            <p>There was an error submiting the form:</p>
-            <p>{error.message}</p>
-          </div>
-        )}
+              {error && (
+                <div className="error-block">
+                  <p>There was an error submiting the form:</p>
+                  <p>{error.message}</p>
+                </div>
+              )}
 
-        <button className="button__submit" type="submit">
-          Submit
-        </button>
-      </form>
-    </div>
+              <Button type="submit" colorScheme="green">
+                Submit
+              </Button>
+              <Text align={'center'}>
+                Already a user? <Link as={ReactDomLink} to='/auth/login' color={'blue.400'}>Login</Link>
+              </Text>
+            </Stack>
+          </form>
+        </Container>
+      </Stack>
+    </Flex>
   );
 }

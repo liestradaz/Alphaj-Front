@@ -3,6 +3,7 @@ import HomePage from "../pages/HomePage";
 import Login from "../pages/LogIn";
 import Signup from "../pages/Signup";
 import ProtectedPage from "../pages/ProtectedPage";
+import ExchangeAccount from "../pages/exchanges";
 import * as PATHS from "../utils/paths";
 
 const routes = (props) => {
@@ -16,10 +17,17 @@ const routes = (props) => {
       path: PATHS.SIGNUPPAGE,
       element: <Signup {...props} />,
     },
-
     {
       path: PATHS.LOGINPAGE,
       element: <Login {...props} />,
+    },
+    {
+      path: PATHS.EXCHANGEACCOUNT,
+      element: user ? (
+        <ExchangeAccount {...props} />
+      ) : (
+        <Navigate to={PATHS.LOGINPAGE} replace />
+      ),
     },
     {
       path: PATHS.PROTECTEDPAGE,
