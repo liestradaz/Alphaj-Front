@@ -1,13 +1,8 @@
 import { useState } from "react";
 import AddExchangeAcc from "../components/AddExchangeAcc";
 import ExchangeAccTable from "../components/ExchangeAccTable";
-import {
-  Button,
-  Heading,
-  Wrap,
-  WrapItem,
-  Box,
-} from "@chakra-ui/react";
+import Sidebar from "../components/Sidebar/Sidebar";
+import { Flex, Button, Heading, Wrap, WrapItem, Box } from "@chakra-ui/react";
 
 function ExchangeAccount() {
   const [showButton, setShowButton] = useState(false);
@@ -16,20 +11,26 @@ function ExchangeAccount() {
 
   return (
     <>
-      <Heading size="2xl" mb="5">
-        Exchange Accounts
-      </Heading>
-      <Button onClick={toggleShowButton}>
-        {showButton ? "Hide" : "Add Exchange"}
-      </Button>
+      <Flex justifyContent="center" >
+        {/* <Sidebar mt={0} /> */}
 
-      <Wrap spacing="30px" justify="center">
-        <WrapItem>{showButton && <AddExchangeAcc />}</WrapItem>
+        <Box>
+          <Heading size="2xl" mb="5">
+            Exchange Accounts
+          </Heading>
+          <Button onClick={toggleShowButton}>
+            {showButton ? "Hide" : "Add Exchange"}
+          </Button>
 
-        <WrapItem >
-          <ExchangeAccTable />
-        </WrapItem>
-      </Wrap>
+          <Wrap spacing="30px" justify="center">
+            <WrapItem>{showButton && <AddExchangeAcc />}</WrapItem>
+
+            <WrapItem>
+              <ExchangeAccTable />
+            </WrapItem>
+          </Wrap>
+        </Box>
+      </Flex>
     </>
   );
 }
