@@ -71,8 +71,8 @@ function ExchangeAccTable() {
                   <Td>{acc.exchange}</Td>
                   <Td>{acc.name}</Td>
                   <Td>{acc.subAcc}</Td>
-                  <Td>{acc.apiKey}</Td>
-                  <Td>{acc.apiSecret}</Td>
+                  <Td>{acc.apiKey}</Td> 
+                  <Td>**********</Td>
                   <Td>
                     <IconButton
                       onClick={() => handleDeleteButton(acc._id)}

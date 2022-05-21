@@ -9,8 +9,10 @@
     "@emotion/styled": "^11.8.1",
     "axios": "^0.27.2",
     "framer-motion": "^6.3.3",
+    "moment": "^2.29.3",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
+    "react-icons": "^4.3.1",
     "react-router-dom": "^6.3.0",
     "react-scripts": "^5.0.1"
   },

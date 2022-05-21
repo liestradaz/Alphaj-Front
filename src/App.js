@@ -5,7 +5,10 @@ import Navbar from "./components/Navbar/Navbar";
 import { getLoggedIn, logout } from "./services/auth";
 import routes from "./config/routes";
 import * as USER_HELPERS from "./utils/userToken";
-
+import Sidebar from "./components/Sidebar/Sidebar";
+import {
+  Flex, Box
+} from "@chakra-ui/react";
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -52,14 +55,17 @@ export default function App() {
   }
   return (
     <div className="App">
-    <Navbar handleLogout={handleLogout} user={user} /> 
-
+    {/* <Navbar handleLogout={handleLogout} user={user} />  */}
+    <Flex >
+    <Sidebar handleLogout={handleLogout} user={user} />
+    <Box w="100%" ml={10}>
       <Routes>
         {routes({ user, authenticate, handleLogout }).map((route) => (
           <Route key={route.path} path={route.path} element={route.element} />
         ))}
       </Routes>
-
+      </Box>
+      </Flex>
     </div>
   );
 }

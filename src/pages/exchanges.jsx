@@ -1,7 +1,6 @@
 import { useState } from "react";
 import AddExchangeAcc from "../components/AddExchangeAcc";
 import ExchangeAccTable from "../components/ExchangeAccTable";
-import Sidebar from "../components/Sidebar/Sidebar";
 import { Flex, Button, Heading, Wrap, WrapItem, Box } from "@chakra-ui/react";
 
 function ExchangeAccount() {
@@ -12,8 +11,6 @@ function ExchangeAccount() {
   return (
     <>
       <Flex justifyContent="center" >
-        {/* <Sidebar mt={0} /> */}
-
         <Box>
           <Heading size="2xl" mb="5">
             Exchange Accounts
