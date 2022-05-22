@@ -11,7 +11,6 @@ import {
   Link,
 } from "@chakra-ui/react";
 import homebg from "../media/homebg2.png";
-import video from "../media/Analysis.mp4";
 import { Link as ReactDomLink } from "react-router-dom";
 import * as PATHS from "../utils/paths";
 import Navbar from "../components/Navbar/Navbar";
@@ -37,7 +36,7 @@ function HomePage(props) {
           <Box position={"absolute"} zIndex={-1} h={"100vh"}>
             <video
               id="videoBG"
-              src={video}
+              src={"https://res.cloudinary.com/dv2iuomw8/video/upload/v1653199441/AlphaJ/Analysis_-_31251_np4xin.mp4"}
               autoPlay
               muted={true}
               loop={true}
