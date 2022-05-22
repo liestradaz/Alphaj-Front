@@ -10,12 +10,8 @@ import {
   Th,
   Td,
   TableContainer,
-  IconButton,
-  LinkBox, LinkOverlay
 } from "@chakra-ui/react";
-import { DeleteIcon, EditIcon, CheckIcon } from "@chakra-ui/icons";
 import * as USER_HELPERS from "../utils/userToken";
-import { Link as ReactDomLink } from "react-router-dom";
 
 
 
@@ -31,6 +27,10 @@ function TradesTable(){
     const [trades, setTrades] = useState([]);
 
     const navigate = useNavigate();
+
+    const handleOnCLickRow = (id) => {
+      navigate(`/orders/${id}`)
+    }
 
     useEffect(() => {
         axios
@@ -55,14 +55,12 @@ function TradesTable(){
               <Th textAlign="center">Avg. Price:</Th>
               <Th textAlign="center">Cost:</Th>
               <Th textAlign="center">Date:</Th>
-              <Th textAlign="center"></Th>
             </Tr>
           </Thead>
           <Tbody>
             {trades.map((trade) => {
               return (
-                <Tr key={trade._id}>
-                  <LinkBox as={ReactDomLink} to={`/orders/${trade._id}`}>
+                <Tr key={trade._id} onClick={()=>handleOnCLickRow(trade._id)} _hover={{background: "#AEC8CA"}} >
                   <Td textAlign="center">{trade.symbol}</Td>
                   <Td textAlign="center">{trade.account.name}</Td>
                   <Td textAlign="center">{trade.account.exchange}</Td>
@@ -72,7 +70,6 @@ function TradesTable(){
                   <Td textAlign="center">{trade.avgPriceOrder}</Td> 
                   <Td textAlign="center">{trade.cost}</Td> 
                   <Td textAlign="center">{moment(trade.date).format("MMMM DD YYYY, h:mm:ss a")}</Td> 
-                </LinkBox>
                 </Tr>
               );
             })}

@@ -57,6 +57,7 @@ export default function Navbar(props) {
                         to={PATHS.SIGNUPPAGE}
                         className="authLink"
                         as={ReactDomLink}
+                        style={{textDecoration:"none"}}
                       >
                         <Button colorScheme="teal">Signup</Button>
                       </Link>
@@ -64,6 +65,7 @@ export default function Navbar(props) {
                         to={PATHS.LOGINPAGE}
                         className="authLink"
                         as={ReactDomLink}
+                        style={{textDecoration:"none"}}
                       >
                         <Button colorScheme="teal">Log In</Button>
                       </Link>
@@ -72,13 +74,14 @@ export default function Navbar(props) {
                 )}
               </Flex>
 
-              <Menu>
+              <Menu >
                 <MenuButton
                   as={Button}
                   rounded={"full"}
                   variant={"link"}
                   cursor={"pointer"}
                   minW={0}
+                  style={{display: "none"}}
                 >
                   <Avatar size="sm" src="avatar-1.jpg" />
                 </MenuButton>
