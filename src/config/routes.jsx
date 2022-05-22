@@ -5,6 +5,7 @@ import Signup from "../pages/Signup";
 import ProtectedPage from "../pages/ProtectedPage";
 import ExchangeAccount from "../pages/exchanges";
 import Dashboard from "../pages/Dashboard";
+import OrderDetail from "../pages/OrderDetail";
 import * as PATHS from "../utils/paths";
 
 const routes = (props) => {
@@ -34,6 +35,14 @@ const routes = (props) => {
       path: PATHS.DASHBOARD,
       element: user ? (
         <Dashboard {...props} />
+      ) : (
+        <Navigate to={PATHS.LOGINPAGE} replace />
+      ),
+    },
+    {
+      path: PATHS.ORDERDETAIL,
+      element: user ? (
+        <OrderDetail {...props} />
       ) : (
         <Navigate to={PATHS.LOGINPAGE} replace />
       ),

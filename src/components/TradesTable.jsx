@@ -11,9 +11,14 @@ import {
   Td,
   TableContainer,
   IconButton,
+  LinkBox, LinkOverlay
 } from "@chakra-ui/react";
 import { DeleteIcon, EditIcon, CheckIcon } from "@chakra-ui/icons";
 import * as USER_HELPERS from "../utils/userToken";
+import { Link as ReactDomLink } from "react-router-dom";
+
+
+
 const moment = require("moment")
 
 const headerConfig =  {
@@ -57,6 +62,7 @@ function TradesTable(){
             {trades.map((trade) => {
               return (
                 <Tr key={trade._id}>
+                  <LinkBox as={ReactDomLink} to={`/orders/${trade._id}`}>
                   <Td textAlign="center">{trade.symbol}</Td>
                   <Td textAlign="center">{trade.account.name}</Td>
                   <Td textAlign="center">{trade.account.exchange}</Td>
@@ -66,6 +72,7 @@ function TradesTable(){
                   <Td textAlign="center">{trade.avgPriceOrder}</Td> 
                   <Td textAlign="center">{trade.cost}</Td> 
                   <Td textAlign="center">{moment(trade.date).format("MMMM DD YYYY, h:mm:ss a")}</Td> 
+                </LinkBox>
                 </Tr>
               );
             })}

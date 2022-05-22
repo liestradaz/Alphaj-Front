@@ -21,6 +21,7 @@ import {
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 import { FcCandleSticks } from "react-icons/fc";
 import { Link as ReactDomLink } from "react-router-dom";
+import * as PATHS from "../../utils/paths";
 
 export default function Navbar(props) {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -41,6 +42,35 @@ export default function Navbar(props) {
               <Button onClick={toggleColorMode}>
                 {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
               </Button>
+
+              <Flex justifyContent="center">
+                {props.user ? (
+                  <>
+                    <Button colorScheme="teal" onClick={props.handleLogout}>
+                      Logout
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Flex gap="2">
+                      <Link
+                        to={PATHS.SIGNUPPAGE}
+                        className="authLink"
+                        as={ReactDomLink}
+                      >
+                        <Button colorScheme="teal">Signup</Button>
+                      </Link>
+                      <Link
+                        to={PATHS.LOGINPAGE}
+                        className="authLink"
+                        as={ReactDomLink}
+                      >
+                        <Button colorScheme="teal">Log In</Button>
+                      </Link>
+                    </Flex>
+                  </>
+                )}
+              </Flex>
 
               <Menu>
                 <MenuButton

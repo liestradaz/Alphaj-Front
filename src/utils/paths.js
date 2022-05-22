@@ -4,3 +4,5 @@ export const LOGINPAGE = "/auth/login";
 export const PROTECTEDPAGE = "/protected";
 export const EXCHANGEACCOUNT = "/accounts";
 export const DASHBOARD = "/dashboard";
+export const ORDERDETAIL = "/orders/:orderId";
+
