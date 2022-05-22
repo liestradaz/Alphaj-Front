@@ -42,6 +42,7 @@ function TradesTable(){
           <Thead>
             <Tr>
               <Th textAlign="center">Symbol:</Th>
+              <Th textAlign="center">Account Name:</Th>
               <Th textAlign="center">Exchange:</Th>
               <Th textAlign="center">Type:</Th>
               <Th textAlign="center">Side:</Th>
@@ -57,13 +58,14 @@ function TradesTable(){
               return (
                 <Tr key={trade._id}>
                   <Td textAlign="center">{trade.symbol}</Td>
-                  <Td textAlign="center">{trade.account}</Td>
+                  <Td textAlign="center">{trade.account.name}</Td>
+                  <Td textAlign="center">{trade.account.exchange}</Td>
                   <Td textAlign="center">{trade.type}</Td>
                   <Td textAlign="center">{trade.side}</Td> 
                   <Td textAlign="center">{trade.contracts}</Td> 
                   <Td textAlign="center">{trade.avgPriceOrder}</Td> 
                   <Td textAlign="center">{trade.cost}</Td> 
-                  <Td textAlign="center">{moment(trade.date).format("MMMM D YYYY, h:mm:ss a")}</Td> 
+                  <Td textAlign="center">{moment(trade.date).format("MMMM DD YYYY, h:mm:ss a")}</Td> 
                 </Tr>
               );
             })}

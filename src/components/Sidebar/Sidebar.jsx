@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Flex,
   Link,
@@ -9,6 +9,7 @@ import {
   Heading,
   Button,
   Icon,
+  useMediaQuery 
 } from "@chakra-ui/react";
 import { HamburgerIcon, ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
 import { BiLogOut } from "react-icons/bi";
@@ -21,6 +22,14 @@ import * as CONSTS from "../../utils/consts";
 
 export default function Sidebar(props) {
   const [navSize, changeNavSize] = useState("large");
+  const [isLargerThan1280] = useMediaQuery('(min-width: 1000px)')
+
+  useEffect(() => {
+    isLargerThan1280 ? changeNavSize("large") : changeNavSize("small")
+    
+  }, [isLargerThan1280]);
+
+
   return (
     <Flex
       pos="sticky"
@@ -61,20 +70,19 @@ export default function Sidebar(props) {
           icon={MdOutlineDashboard}
           title="Dashboard"
           description="This is the description for the dashboard."
-          path={"/dashboard"}
+          path={PATHS.DASHBOARD}
         />
         <NavItem
           navSize={navSize}
           icon={AiOutlineUser}
           title="Profile"
-          active
           path={"/"}
         />
         <NavItem
           navSize={navSize}
           icon={AiOutlineApi}
           title="Accounts"
-          path={"accounts"}
+          path={PATHS.EXCHANGEACCOUNT}
         />
 
         <IconButton

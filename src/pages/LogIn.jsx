@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { login } from "../services/auth";
 import { useNavigate } from "react-router-dom";
+import Navbar from '../components/Navbar/Navbar';
 import "./Signup";
 import * as PATHS from "../utils/paths";
 import * as USER_HELPERS from "../utils/userToken";
@@ -48,8 +49,10 @@ export default function LogIn({ authenticate }) {
   }
 
   return (
-    <Flex justify="center" align="center" direction="column">
-      <Stack spacing="9">
+    <>
+      <Navbar  />
+    <Flex justify="center" align="center" direction="column" mt={6}>
+      <Stack spacing="9" justify={"center"}  align={"center"}>
         <Heading size="2xl">Log In</Heading>
         <Container borderWidth="1px" p="5">
           <form onSubmit={handleFormSubmission}>
@@ -94,5 +97,6 @@ export default function LogIn({ authenticate }) {
         </Container>
       </Stack>
     </Flex>
+    </>
   );
 }
