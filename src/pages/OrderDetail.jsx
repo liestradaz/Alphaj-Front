@@ -6,11 +6,12 @@ import Sidebar from "../components/Sidebar/Sidebar";
 import Navbar from '../components/Navbar/Navbar';
 import {
     Flex,
-    Box
+    Box,
+    useColorModeValue
   } from '@chakra-ui/react';
 import { API_URL } from "../utils/consts";
 import * as USER_HELPERS from "../utils/userToken";
-import TvChart from "../components/TvChart"
+import TradingViewWidget, { Themes } from 'react-tradingview-widget';
 
 
 const headerConfig =  {
@@ -42,7 +43,7 @@ console.log(order)
         <Box w="100%" ml={10}>
 
         <p>{order.symbol}</p>
-        <TvChart/>
+         <TradingViewWidget symbol="BITSO:BTCMXN" allow_symbol_change={false} hide_side_toolbar={false} theme={useColorModeValue(Themes.LIGHT, Themes.DARK)} />
         </Box>
       </Flex>
         </>
