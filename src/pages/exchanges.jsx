@@ -1,7 +1,7 @@
 import { useState } from "react";
 import AddExchangeAcc from "../components/AddExchangeAcc";
 import ExchangeAccTable from "../components/ExchangeAccTable";
-import { Flex, Button, Heading, Wrap, WrapItem, Box, Container, useBreakpointValue } from "@chakra-ui/react";
+import { Flex, Button, Heading, Wrap, WrapItem, Box, Container, useBreakpointValue  } from "@chakra-ui/react";
 import Sidebar from "../components/Sidebar/Sidebar";
 import Navbar from '../components/Navbar/Navbar';
 
@@ -27,7 +27,6 @@ function ExchangeAccount(props) {
     
           <Wrap spacing="30px" justify="center">
             <WrapItem>{showButton && <AddExchangeAcc />}</WrapItem>
-
             <WrapItem>
             <Container maxWidth={useBreakpointValue({ base: "max", md: "max", sm: "md" })} >
               <ExchangeAccTable />

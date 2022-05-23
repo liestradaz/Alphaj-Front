@@ -13,8 +13,6 @@ import {
 } from "@chakra-ui/react";
 import * as USER_HELPERS from "../utils/userToken";
 
-
-
 const moment = require("moment")
 
 const headerConfig =  {
@@ -61,15 +59,15 @@ function TradesTable(){
             {trades.map((trade) => {
               return (
                 <Tr key={trade._id} onClick={()=>handleOnCLickRow(trade._id)} _hover={{background: "#AEC8CA"}} >
-                  <Td textAlign="center">{trade.symbol}</Td>
+                  <Td textAlign="center">{trade.symbol.toUpperCase()}</Td>
                   <Td textAlign="center">{trade.account.name}</Td>
                   <Td textAlign="center">{trade.account.exchange}</Td>
-                  <Td textAlign="center">{trade.type}</Td>
-                  <Td textAlign="center">{trade.side}</Td> 
+                  <Td textAlign="center">{trade.type.toUpperCase()}</Td>
+                  <Td textAlign="center">{trade.side.toUpperCase()}</Td> 
                   <Td textAlign="center">{trade.contracts}</Td> 
-                  <Td textAlign="center">{trade.avgPriceOrder}</Td> 
-                  <Td textAlign="center">{trade.cost}</Td> 
-                  <Td textAlign="center">{moment(trade.date).format("MMMM DD YYYY, h:mm:ss a")}</Td> 
+                  <Td textAlign="center">{"$"+trade.avgPriceOrder}</Td> 
+                  <Td textAlign="center">{"$"+trade.cost}</Td> 
+                  <Td textAlign="center">{moment(trade.date).format("MMMM DD YYYY, h:mm a")}</Td> 
                 </Tr>
               );
             })}

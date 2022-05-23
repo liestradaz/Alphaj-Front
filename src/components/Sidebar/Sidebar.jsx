@@ -69,20 +69,30 @@ export default function Sidebar(props) {
           navSize={navSize}
           icon={MdOutlineDashboard}
           title="Dashboard"
-          description="This is the description for the dashboard."
+          description="This is where Users can check their transactions and get some metrics."
           path={PATHS.DASHBOARD}
         />
         <NavItem
           navSize={navSize}
           icon={AiOutlineUser}
           title="Profile"
+          description="User page information."
           path={"/"}
         />
         <NavItem
           navSize={navSize}
           icon={AiOutlineApi}
           title="Accounts"
+          description="The place where Users add their APIs credentials to pull data from different exchanges."
           path={PATHS.EXCHANGEACCOUNT}
+        />
+
+        <NavItem
+          navSize={navSize}
+          icon={AiOutlineApi}
+          title="NFTs"
+          description="The place where Users can check their NFTs holdings."
+          path={PATHS.NFTEXPLORER}
         />
 
         <IconButton
