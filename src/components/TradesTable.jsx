@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { API_URL } from "../utils/consts";
 import {
@@ -10,6 +10,8 @@ import {
   Th,
   Td,
   TableContainer,
+  Button,
+  useColorModeValue
 } from "@chakra-ui/react";
 import * as USER_HELPERS from "../utils/userToken";
 
@@ -21,25 +23,67 @@ const headerConfig =  {
     },
   } 
 
-function TradesTable(){
+  function roundNumber(value, exp, type="round") {
+    // Si el exp no está definido o es cero...
+    if (typeof exp === 'undefined' || +exp === 0) {
+      return Math[type](value);
+    }
+    value = +value;
+    exp = +exp;
+    // Si el valor no es un número o el exp no es un entero...
+    if (isNaN(value) || !(typeof exp === 'number' && exp % 1 === 0)) {
+      return NaN;
+    }
+    // Shift
+    value = value.toString().split('e');
+    value = Math[type](+(value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp)));
+    // Shift back
+    value = value.toString().split('e');
+    return +(value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp));
+  }
+
+
+function TradesTable(props){
     const [trades, setTrades] = useState([]);
+    const [showSensibleData, setShowSensibleData] = useState(false)
+
+    let location = useLocation();
+    //console.log("ctxpuser",props.user)
 
     const navigate = useNavigate();
+
+    const toggleShowButton = () => setShowSensibleData(!showSensibleData);
 
     const handleOnCLickRow = (id) => {
       navigate(`/orders/${id}`)
     }
 
     useEffect(() => {
+      console.log("1usertoken",USER_HELPERS.getUserToken())
+      if (props.user) {
         axios
           .get(`${API_URL}/api/trades/orders`, headerConfig )
           .then((response) => setTrades(response.data))
           .catch((err) => console.log(err));
-      }, []);
+      }
+      }, [props.user]);
 
+      useEffect(() => {
+        console.log("2usertoken",USER_HELPERS.getUserToken())
+        if (props.user){
+          axios
+            .get(`${API_URL}/api/trades/orders`, headerConfig )
+            .then((response) => setTrades(response.data))
+            .catch((err) => console.log(err));
+        }
+      }, [location]);
 
+      const hoverBg = useColorModeValue("#AEC8CA", "#445859")
       return (
           <>
+           <Button onClick={toggleShowButton}>
+            {showSensibleData ? "Hide Sensible Data" : "Show Sensible Data"}
+          </Button> 
           <TableContainer>
         <Table variant="simple" size='sm' mt={5}>
           <Thead>
@@ -58,15 +102,15 @@ function TradesTable(){
           <Tbody>
             {trades.map((trade) => {
               return (
-                <Tr key={trade._id} onClick={()=>handleOnCLickRow(trade._id)} _hover={{background: "#AEC8CA"}} >
+                <Tr key={trade._id} _hover={{background:hoverBg}} onClick={()=>handleOnCLickRow(trade._id)} >
                   <Td textAlign="center">{trade.symbol.toUpperCase()}</Td>
                   <Td textAlign="center">{trade.account.name}</Td>
                   <Td textAlign="center">{trade.account.exchange}</Td>
                   <Td textAlign="center">{trade.type.toUpperCase()}</Td>
                   <Td textAlign="center">{trade.side.toUpperCase()}</Td> 
-                  <Td textAlign="center">{trade.contracts}</Td> 
-                  <Td textAlign="center">{"$"+trade.avgPriceOrder}</Td> 
-                  <Td textAlign="center">{"$"+trade.cost}</Td> 
+                  <Td textAlign="center">{showSensibleData ? roundNumber(trade.contracts, -4) : "****"}</Td> 
+                  <Td textAlign="center">{"$"+roundNumber(trade.avgPriceOrder, -4)}</Td> 
+                  <Td textAlign="center">{showSensibleData ?  "$"+roundNumber(trade.cost, -4) : "****"}</Td> 
                   <Td textAlign="center">{moment(trade.date).format("MMMM DD YYYY, h:mm a")}</Td> 
                 </Tr>
               );

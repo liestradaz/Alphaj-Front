@@ -11,7 +11,7 @@ import {
   Icon,
   useMediaQuery 
 } from "@chakra-ui/react";
-import { HamburgerIcon, ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
+import { HamburgerIcon, ArrowLeftIcon, ArrowRightIcon, StarIcon } from "@chakra-ui/icons";
 import { BiLogOut } from "react-icons/bi";
 import { MdOutlineDashboard } from "react-icons/md";
 import { AiOutlineApi, AiOutlineUser, AiOutlineLogin, AiOutlineUserAdd } from "react-icons/ai";
@@ -77,7 +77,7 @@ export default function Sidebar(props) {
           icon={AiOutlineUser}
           title="Profile"
           description="User page information."
-          path={"/"}
+          path={`/user/${props.user._id}`}
         />
         <NavItem
           navSize={navSize}
@@ -89,7 +89,7 @@ export default function Sidebar(props) {
 
         <NavItem
           navSize={navSize}
-          icon={AiOutlineApi}
+          icon={StarIcon}
           title="NFTs"
           description="The place where Users can check their NFTs holdings."
           path={PATHS.NFTEXPLORER}

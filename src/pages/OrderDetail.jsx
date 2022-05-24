@@ -7,20 +7,11 @@ import Navbar from "../components/Navbar/Navbar";
 import DetailCard from "../components/DetailCard";
 import {
   Flex,
-  Box,
   useColorModeValue,
   Wrap,
   WrapItem,
-  Center,
-  Text,
-  Stat,
-  StatLabel,
-  StatNumber,
-  StatHelpText,
-  StatArrow,
-  StatGroup,
   Stack,
-  Heading,
+  Button
 } from "@chakra-ui/react";
 import { API_URL } from "../utils/consts";
 import * as USER_HELPERS from "../utils/userToken";
@@ -34,9 +25,40 @@ const headerConfig = {
   },
 };
 
+function roundNumber(value, exp, type="round") {
+  // Si el exp no está definido o es cero...
+  if (typeof exp === 'undefined' || +exp === 0) {
+    return Math[type](value);
+  }
+  value = +value;
+  exp = +exp;
+  // Si el valor no es un número o el exp no es un entero...
+  if (isNaN(value) || !(typeof exp === 'number' && exp % 1 === 0)) {
+    return NaN;
+  }
+  // Shift
+  value = value.toString().split('e');
+  value = Math[type](+(value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp)));
+  // Shift back
+  value = value.toString().split('e');
+  return +(value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp));
+}
+
+const removeStringChar = (str) => { 
+  if (str.includes("/")){
+    return str.replace("/","")
+  } else {
+    return str.replace("-","")
+  }
+
+}
+
 function OrderDetail(props) {
   const { orderId } = useParams();
   const [order, setOrder] = useState();
+  const [showSensibleData, setShowSensibleData] = useState(false)
+
+  const toggleShowButton = () => setShowSensibleData(!showSensibleData);
 
   useEffect(() => {
     axios
@@ -51,6 +73,9 @@ function OrderDetail(props) {
       <Flex>
         <Sidebar handleLogout={props.handleLogout} user={props.user} />
         <Stack w="100%" ml={10} spacing={"9"}>
+        <Button onClick={toggleShowButton}>
+            {showSensibleData ? "Hide Sensible Data" : "Show Sensible Data"}
+          </Button> 
           <Wrap mt={9} spacing= {{base: '30px', md: '20px', sm:"5"}} justify='center'>
             <WrapItem>
               <DetailCard label={"Symbol"} data={order ? order.symbol.toUpperCase() : ""} />
@@ -61,17 +86,17 @@ function OrderDetail(props) {
             <WrapItem>
               <DetailCard
                 label={"Contracts"}
-                data={order ? order.contracts : ""}
+                data={showSensibleData ? order ? roundNumber(order.contracts, -4) : "" : "****"}
               />
             </WrapItem>
             <WrapItem>
               <DetailCard
                 label={"Avg Price"}
-                data={order ? "$"+order.avgPriceOrder : ""}
+                data={order ? "$"+ roundNumber(order.avgPriceOrder, -4) : ""}
               />
             </WrapItem>
             <WrapItem>
-              <DetailCard label={"Cost"} data={order ? "$"+order.cost : ""} />
+              <DetailCard label={"Cost"} data={showSensibleData ? order ? "$"+roundNumber(order.cost, -4) : "" : "****"} />
             </WrapItem>
             <WrapItem>
               <DetailCard label={"Date"} data={order ? moment(order.date).format("MMM DD YYYY, h:mm:ss a") : ""} />
@@ -79,7 +104,7 @@ function OrderDetail(props) {
           </Wrap>
 
           <TradingViewWidget
-            symbol={order ? `${order.account.exchange.toUpperCase()}:${order.symbol.replace("/","")}` : "BITSO: BTCMXN"}
+            symbol={order ? `${order.account.exchange.toUpperCase()}:${removeStringChar(order.symbol)}` : "BITSO: BTCMXN"}
             allow_symbol_change={false}
             hide_side_toolbar={false}
             theme={useColorModeValue(Themes.LIGHT, Themes.DARK)}

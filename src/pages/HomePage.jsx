@@ -30,7 +30,11 @@ function HomePage(props) {
       >
         <VStack
           w={"full"}
-          justify={"center"}
+          justify={useBreakpointValue({ base: "center", md: "center", sm: "flex-start" })}
+          mr={useBreakpointValue({ base: "50", md: "50", sm: "0" })}
+          ml={useBreakpointValue({ base: "0", md: "0", sm: "50" })}
+          mt={useBreakpointValue({ base: "0", md: "0", sm: "50" })}
+          align={useBreakpointValue({ base: "flex-end", md: "flex-end", sm: "flex-start" })}
           px={useBreakpointValue({ base: 4, md: 8 })}
         >
           <Box position={"absolute"} zIndex={-1} h={"100vh"}>
@@ -43,7 +47,7 @@ function HomePage(props) {
               poster={homebg}
             ></video>
           </Box>
-          <Stack maxW={"2xl"} align={"flex-start"} spacing={2} zIndex={1}>
+          <Stack maxW={"2xl"} align={"flex-start"} spacing={2} zIndex={1} >
             <Text
               color={"white"}
               fontWeight={700}

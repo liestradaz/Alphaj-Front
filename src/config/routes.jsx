@@ -7,6 +7,7 @@ import ExchangeAccount from "../pages/exchanges";
 import Dashboard from "../pages/Dashboard";
 import OrderDetail from "../pages/OrderDetail";
 import NftExplorer from "../pages/NftExplorer";
+import UserPage from "../pages/UserPage";
 import * as PATHS from "../utils/paths";
 
 const routes = (props) => {
@@ -23,6 +24,14 @@ const routes = (props) => {
     {
       path: PATHS.LOGINPAGE,
       element: <Login {...props} />,
+    },
+    {
+      path: PATHS.USERPAGE,
+      element: user ? (
+        <UserPage {...props} />
+      ) : (
+        <Navigate to={PATHS.LOGINPAGE} replace />
+      ),
     },
     {
       path: PATHS.EXCHANGEACCOUNT,

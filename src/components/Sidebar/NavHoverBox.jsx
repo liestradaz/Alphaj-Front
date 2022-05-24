@@ -3,7 +3,8 @@ import {
     Flex,
     Heading,
     Text,
-    Icon
+    Icon,
+    useColorModeValue
 } from '@chakra-ui/react'
 
 export default function NavHoverBox({ title, icon, description }) {
@@ -26,7 +27,7 @@ export default function NavHoverBox({ title, icon, description }) {
                 flexDir="column"
                 alignItems="center"
                 justify="center"
-                backgroundColor="#82AAAD"
+                backgroundColor={useColorModeValue("#82AAAD", "#445859")}
                 borderRadius="10px"
                 color="#fff"
                 textAlign="center"

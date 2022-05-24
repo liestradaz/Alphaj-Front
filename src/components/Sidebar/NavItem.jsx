@@ -7,7 +7,8 @@ import {
     Link,
     Menu,
     MenuButton,
-    MenuList
+    MenuList,
+    useColorModeValue
 } from '@chakra-ui/react'
 import NavHoverBox from './NavHoverBox'
 import { Link as ReactDomLink } from "react-router-dom";
@@ -15,6 +16,7 @@ import { Link as ReactDomLink } from "react-router-dom";
 
 export default function NavItem({ icon, title, description, active, navSize, path }) {
     const { isOpen, onOpen, onClose } = useDisclosure()
+    const hoverBg = useColorModeValue("#AEC8CA", "#445859")
 
     return (
         <Flex
@@ -30,7 +32,7 @@ export default function NavItem({ icon, title, description, active, navSize, pat
                     backgroundColor={active && "#AEC8CA"}
                     p={3}
                     borderRadius={8}
-                    _hover={{ textDecor: 'none', backgroundColor: "#AEC8CA" }}
+                    _hover={{ textDecor: 'none', backgroundColor: hoverBg }}
                     w={navSize == "large" && "100%"}
                     onMouseEnter={onOpen} onMouseLeave={onClose}
                 >

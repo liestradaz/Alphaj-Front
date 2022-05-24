@@ -45,7 +45,6 @@ function AddExchangeAcc() {
         }
       )
       .then((res) => {
-        console.log("res", res);
         setExchange("Bitso");
         setName("");
         setSubAcc("");
@@ -58,7 +57,7 @@ function AddExchangeAcc() {
   return (
     <>
       <Container borderWidth="1px" p="5">
-        <Heading size="lg" mb="5">
+        <Heading size="lg" mb="5" align="center">
           Connect a new exchange
         </Heading>
         <form onSubmit={handleFormSubmission}>
