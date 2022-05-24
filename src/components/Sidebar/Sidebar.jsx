@@ -107,7 +107,7 @@ export default function Sidebar(props) {
         />
       </Flex>
 
-      <Flex justifyContent="center">
+      <Flex justifyContent="center" display={"none"}>
         {props.user ? (
           <>
             <Button

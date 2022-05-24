@@ -28,7 +28,7 @@ function NftExplorer(props) {
     if (props.user.walletAddress){
       axios
         .get(
-          `${DEBANK_URL}/v1/user/nft_list?id=${props.user.walletAddress}`  //0x2eB5e5713A874786af6Da95f6E4DEaCEdb5dC246  ${props.user.walletAddress}
+          `${DEBANK_URL}/v1/user/nft_list?id=${props.user.walletAddress}` 
         )
         .then((response) => setNftList(response.data))
         .catch((err) => console.log(err));
@@ -43,7 +43,7 @@ function NftExplorer(props) {
     if (props.user.walletAddress){
       axios
         .get(
-          `${DEBANK_URL}/v1/user/nft_list?id=${props.user.walletAddress}`  //0x2eB5e5713A874786af6Da95f6E4DEaCEdb5dC246  ${props.user.walletAddress}
+          `${DEBANK_URL}/v1/user/nft_list?id=${props.user.walletAddress}` 
         )
         .then((response) => setNftList(response.data))
         .catch((err) => console.log(err));
