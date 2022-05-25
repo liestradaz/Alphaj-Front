@@ -18,12 +18,6 @@ import * as USER_HELPERS from "../utils/userToken";
 
 const moment = require("moment")
 
-const headerConfig =  {
-    headers: {
-      Authorization: USER_HELPERS.getUserToken()
-    },
-  } 
-
   function roundNumber(value, exp, type="round") {
     // if exp not defined or zero...
     if (typeof exp === 'undefined' || +exp === 0) {
@@ -43,12 +37,9 @@ const headerConfig =  {
     return +(value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp));
   }
 
-
 function OrdersTable(props){
     const [trades, setTrades] = useState([]);
     const [showSensibleData, setShowSensibleData] = useState(false)
-
-    let location = useLocation();
 
     const navigate = useNavigate();
 
@@ -59,7 +50,7 @@ function OrdersTable(props){
     }
 
     useEffect(() => {
-      if (props.user) {
+      if (props.user && headerConfig?.headers?.Authorization) {
         axios
           .get(`${API_URL}/api/trades/orders`, headerConfig )
           .then((response) => setTrades(response.data))
@@ -67,14 +58,11 @@ function OrdersTable(props){
       }
       }, [props.user]);
 
-      useEffect(() => {
-        if (props.user){
-          axios
-            .get(`${API_URL}/api/trades/orders`, headerConfig )
-            .then((response) => setTrades(response.data))
-            .catch((err) => console.log(err));
-        }
-      }, [location]);
+      const headerConfig =  {
+        headers: {
+          Authorization: USER_HELPERS.getUserToken()
+        },
+      } 
 
       const hoverBg = useColorModeValue("#AEC8CA", "#445859")
       return (

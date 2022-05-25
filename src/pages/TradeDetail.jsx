@@ -19,12 +19,6 @@ import TradingViewWidget, { Themes } from "react-tradingview-widget";
 
 const moment = require("moment");
 
-const headerConfig = {
-  headers: {
-    Authorization: USER_HELPERS.getUserToken(),
-  },
-};
-
 function roundNumber(value, exp, type="round") {
   // if exp not defined or zero
   if (typeof exp === 'undefined' || +exp === 0) {
@@ -66,6 +60,12 @@ function TradeDetail(props) {
       .then((response) => setTrade(response.data))
       .catch((err) => console.log(err));
   }, []);
+  
+const headerConfig = {
+  headers: {
+    Authorization: USER_HELPERS.getUserToken(),
+  },
+};
 
   return (
     <>

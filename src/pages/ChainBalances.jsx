@@ -15,15 +15,20 @@ import {
   Link,
   Center,
   VStack,
+  HStack,
 } from "@chakra-ui/react";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { Link as ReactDomLink } from "react-router-dom";
+import ReactApexCharts from "react-apexcharts";
+import * as utilFunction from "../utils/utilFunctions";
 
 const DEBANK_URL = "https://openapi.debank.com";
 
 function ChainBalances(props) {
   const [chainList, setChainList] = useState([]);
   const [balance, setBalance] = useState(0);
+  const [balanceList, setBalanceList] = useState([]);
+  const [balanceListLabel, setBalanceListLabel] = useState([]);
 
   useEffect(() => {
     if (props.user.walletAddress) {
@@ -40,6 +45,42 @@ function ChainBalances(props) {
       setChainList([]);
     }
   }, []);
+
+  useEffect(() => {
+    if (chainList.length > 0) {
+      const usdList = [];
+      const labelList = [];
+      chainList.map((chain) => {
+        if (chain.usd_value > 0) {
+          usdList.push(chain.usd_value);
+          labelList.push(chain.name);
+        }
+        return;
+      });
+      setBalanceList(usdList);
+      setBalanceListLabel(labelList);
+    }
+  }, [chainList]);
+
+  const optionsPieChart = {
+    chart: {
+      type: "donut",
+    },
+    responsive: [
+      {
+        breakpoint: 480,
+        options: {
+          chart: {
+            width: 300,
+          },
+          legend: {
+            position: "bottom",
+          },
+        },
+      },
+    ],
+    labels: balanceListLabel,
+  };
 
   return (
     <>
@@ -58,18 +99,36 @@ function ChainBalances(props) {
             Your Holdings
           </Heading>
 
-          <Container
-                      border={"1px"}
-                      maxW="300px"
-                      p={5}
-                      borderRadius={"30px"}
-                      mb={5}
-                      textAlign="center"
-                    >
-          <Text fontWeight={"700"} fontSize="md">Total Balance:</Text>
-          <Text>  ${balance}</Text>
-          </Container>
+          <Wrap spacing={"20"} align='center' justify='center'>
+            <WrapItem>
+              <Center>
+              <Container
+                border={"1px"}
+                maxW="300px"
+                p={5}
+                borderRadius={"30px"}
+                mb={5}
+                textAlign="center"
 
+              >
+                <Text fontWeight={"700"} fontSize="md">
+                  Total Balance:
+                </Text>
+                <Text> ${utilFunction.roundNumber(balance, -4)}</Text>
+              </Container>
+              </Center>
+            </WrapItem>
+            <WrapItem>
+              <Box >
+                <ReactApexCharts
+                  options={optionsPieChart}
+                  series={balanceList}
+                  type="donut"
+                  width="450"
+                />
+              </Box>
+            </WrapItem>
+          </Wrap>
           {chainList && chainList.length === 0 ? (
             <Center
               bg="tomato"
@@ -87,40 +146,42 @@ function ChainBalances(props) {
               </VStack>
             </Center>
           ) : (
-            <Wrap spacing="25px" justify="center">
+            <Wrap spacing="25px" justify="center" mt={10}>
               {chainList.map((chain, idx) => {
-                return (
-                  <WrapItem key={idx} w={"300px"} justify="center">
-                    <Container
-                      key={chain.id}
-                      border={"1px"}
-                      maxW="300px"
-                      p={5}
-                      borderRadius={"30px"}
-                    >
-                      <Flex>
-                        <Box>
-                          {chain.logo_url && (
-                            <Image
-                              src={chain.logo_url}
-                              alt="Logo Image"
-                              boxSize="50px"
-                            />
-                          )}
-                        </Box>
-                        <Box ml={5}>
-                          <Text mt={2} fontWeight={"700"} fontSize="md">
-                            {chain.name}
-                          </Text>
+                if (chain.usd_value > 0) {
+                  return (
+                    <WrapItem key={idx} w={"300px"} justify="center">
+                      <Container
+                        key={chain.id}
+                        border={"1px"}
+                        maxW="300px"
+                        p={5}
+                        borderRadius={"30px"}
+                      >
+                        <Flex>
+                          <Box>
+                            {chain.logo_url && (
+                              <Image
+                                src={chain.logo_url}
+                                alt="Logo Image"
+                                boxSize="50px"
+                              />
+                            )}
+                          </Box>
+                          <Box ml={5}>
+                            <Text mt={2} fontWeight={"700"} fontSize="md">
+                              {chain.name}
+                            </Text>
 
-                          <Text fontSize="md" as="em">
-                            ${chain.usd_value}
-                          </Text>
-                        </Box>
-                      </Flex>
-                    </Container>
-                  </WrapItem>
-                );
+                            <Text fontSize="md" as="em">
+                              ${utilFunction.roundNumber(chain.usd_value, -4)}
+                            </Text>
+                          </Box>
+                        </Flex>
+                      </Container>
+                    </WrapItem>
+                  );
+                }
               })}
             </Wrap>
           )}

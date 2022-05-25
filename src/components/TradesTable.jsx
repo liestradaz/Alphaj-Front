@@ -18,11 +18,7 @@ import * as USER_HELPERS from "../utils/userToken";
 
 const moment = require("moment")
 
-const headerConfig =  {
-    headers: {
-      Authorization: USER_HELPERS.getUserToken()
-    },
-  } 
+
 
   function roundNumber(value, exp, type="round") {
     // if exp not defined or zero
@@ -48,33 +44,29 @@ function TradesTable(props){
     const [trades, setTrades] = useState([]);
     const [showSensibleData, setShowSensibleData] = useState(false)
 
-    let location = useLocation();
-
     const navigate = useNavigate();
 
     const toggleShowButton = () => setShowSensibleData(!showSensibleData);
-
+    
+    const headerConfig =  {
+      headers: {
+        Authorization: USER_HELPERS.getUserToken()
+      },
+    } 
+    
     const handleOnCLickRow = (id) => {
       navigate(`/trades/${id}`)
     }
 
     useEffect(() => {
-      if (props.user) {
+      if (props.user && headerConfig?.headers?.Authorization) {
+
         axios
           .get(`${API_URL}/api/trades`, headerConfig )
           .then((response) => setTrades(response.data))
           .catch((err) => console.log(err));
       }
-      }, [props.user]);
-
-      useEffect(() => {
-        if (props.user){
-          axios
-            .get(`${API_URL}/api/trades`, headerConfig )
-            .then((response) => setTrades(response.data))
-            .catch((err) => console.log(err));
-        }
-      }, [location]);
+      }, [props.user, headerConfig.headers.Authorization]);
 
       const hoverBg = useColorModeValue("#AEC8CA", "#445859")
       return (
@@ -84,7 +76,7 @@ function TradesTable(props){
             {showSensibleData ?  <ViewOffIcon ml={"2"}/> :  <ViewIcon ml={"2"}/>}
 
           </Button> 
-          <TableContainer>
+          <TableContainer overflowX={"scroll"}>
         <Table variant="simple" size='sm' mt={5} >
           <Thead>
             <Tr>

@@ -24,27 +24,14 @@ function Dashboard(props) {
         <Sidebar handleLogout={props.handleLogout} user={props.user} />
         <Box w="100%" ml={10}>
           <Flex justifyContent="center">
-            <Tabs align='center' variant='soft-rounded' mt="5">
+            <Tabs align="center" variant="soft-rounded" mt="5">
               <TabList>
                 <Tab>Margin</Tab>
                 <Tab>Spot</Tab>
               </TabList>
 
               <TabPanels>
-               {/*  Tab for Margin orders */}
-                <TabPanel>
-                <Container
-                    maxWidth={useBreakpointValue({
-                      base: "max",
-                      md: "max",
-                      sm: "sm",
-                    })}
-                    overflowX={"auto"}
-                  >
-                    <TradesTable user={props.user} />
-                  </Container>
-                </TabPanel>
-               {/*  Tab for Spot Trades */}
+                {/*  Tab for Margin orders */}
                 <TabPanel>
                   <Container
                     maxWidth={useBreakpointValue({
@@ -52,7 +39,18 @@ function Dashboard(props) {
                       md: "max",
                       sm: "sm",
                     })}
-                    
+                  >
+                    <TradesTable user={props.user} />
+                  </Container>
+                </TabPanel>
+                {/*  Tab for Spot Trades */}
+                <TabPanel>
+                  <Container
+                    maxWidth={useBreakpointValue({
+                      base: "max",
+                      md: "max",
+                      sm: "sm",
+                    })}
                   >
                     <OrdersTable user={props.user} />
                   </Container>

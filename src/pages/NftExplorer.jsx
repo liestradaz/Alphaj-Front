@@ -18,11 +18,34 @@ import {
 } from "@chakra-ui/react";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { Link as ReactDomLink } from "react-router-dom";
+import { useContext } from 'react';
+import { UserContext } from "../context/user.context";
 
 const DEBANK_URL = "https://openapi.debank.com";
 
 function NftExplorer(props) {
+  /* const {nftListCtx } = useContext(UserContext); */
+  /* const [nftList, setNftList] = useState(nftListCtx); */
   const [nftList, setNftList] = useState([]);
+
+/*   useEffect(() => {
+    if (props.user.walletAddress){
+      axios
+        .get(
+          `${DEBANK_URL}/v1/user/nft_list?id=${props.user.walletAddress}` 
+        )
+        .then((response) => {
+          if (response.data.length>25){
+            setNftList(response.data.slice(0,26))
+          } else {
+            setNftList(response.data)
+          }
+        })
+        .catch((err) => console.log(err));
+    } else {
+      setNftList([])
+    }
+  }, []); */
 
   useEffect(() => {
     if (props.user.walletAddress){
@@ -30,7 +53,14 @@ function NftExplorer(props) {
         .get(
           `${DEBANK_URL}/v1/user/nft_list?id=${props.user.walletAddress}` 
         )
-        .then((response) => setNftList(response.data))
+        .then((response) => {
+
+          if (response.data.length>25){
+            setNftList(response.data.slice(0,26))
+          } else {
+            setNftList(response.data)
+          }
+        })
         .catch((err) => console.log(err));
     } else {
       setNftList([])
@@ -45,12 +75,22 @@ function NftExplorer(props) {
         .get(
           `${DEBANK_URL}/v1/user/nft_list?id=${props.user.walletAddress}` 
         )
-        .then((response) => setNftList(response.data))
+        .then((response) => {
+
+          if (response.data.length>25){
+            setNftList(response.data.slice(0,26))
+          } else {
+            setNftList(response.data)
+          }
+        })
         .catch((err) => console.log(err));
     } else {
       setNftList([])
     }
   }, [nftList]);
+
+  
+ 
 
   return (
     <>

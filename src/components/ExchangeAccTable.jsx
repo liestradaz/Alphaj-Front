@@ -15,12 +15,6 @@ import {
 import { DeleteIcon, EditIcon, CheckIcon } from "@chakra-ui/icons";
 import * as USER_HELPERS from "../utils/userToken";
 
-const headerConfig =  {
-  headers: {
-    Authorization: USER_HELPERS.getUserToken()
-  },
-} 
-
 function ExchangeAccTable() {
   const [isEdit, setIsEdit] = useState(false);
   const [accounts, setAccounts] = useState([]);
@@ -49,6 +43,12 @@ function ExchangeAccTable() {
       .then(() => navigate("/accounts"))
       .catch((err) => console.log(err));
   };
+
+  const headerConfig =  {
+    headers: {
+      Authorization: USER_HELPERS.getUserToken()
+    },
+  } 
 
   return (
     <>
