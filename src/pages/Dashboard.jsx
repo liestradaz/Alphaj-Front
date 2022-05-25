@@ -39,6 +39,7 @@ function Dashboard(props) {
                       md: "max",
                       sm: "sm",
                     })}
+                    overflowX={"auto"}
                   >
                     <TradesTable user={props.user} />
                   </Container>
@@ -51,6 +52,7 @@ function Dashboard(props) {
                       md: "max",
                       sm: "sm",
                     })}
+                    
                   >
                     <OrdersTable user={props.user} />
                   </Container>

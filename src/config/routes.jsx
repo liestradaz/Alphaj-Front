@@ -10,6 +10,7 @@ import TradeDetail from "../pages/TradeDetail";
 import NftExplorer from "../pages/NftExplorer";
 import UserPage from "../pages/UserPage";
 import * as PATHS from "../utils/paths";
+import ChainBalances from "../pages/ChainBalances";
 
 const routes = (props) => {
   const { user } = props;
@@ -70,6 +71,14 @@ const routes = (props) => {
       path: PATHS.NFTEXPLORER,
       element: user ? (
         <NftExplorer {...props} />
+      ) : (
+        <Navigate to={PATHS.LOGINPAGE} replace />
+      ),
+    },
+    {
+      path: PATHS.CHAINBALANCES,
+      element: user ? (
+        <ChainBalances {...props} />
       ) : (
         <Navigate to={PATHS.LOGINPAGE} replace />
       ),

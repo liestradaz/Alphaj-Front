@@ -13,6 +13,7 @@ import {
   Button,
   useColorModeValue
 } from "@chakra-ui/react";
+import { ViewIcon, ViewOffIcon} from "@chakra-ui/icons";
 import * as USER_HELPERS from "../utils/userToken";
 
 const moment = require("moment")
@@ -80,6 +81,7 @@ function OrdersTable(props){
           <>
            <Button onClick={toggleShowButton}>
             {showSensibleData ? "Hide Sensible Data" : "Show Sensible Data"}
+            {showSensibleData ?  <ViewOffIcon ml={"2"}/> :  <ViewIcon ml={"2"}/>}
           </Button> 
           <TableContainer>
         <Table variant="simple" size='sm' mt={5}>

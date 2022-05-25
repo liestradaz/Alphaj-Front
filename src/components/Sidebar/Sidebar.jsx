@@ -11,9 +11,10 @@ import {
   Icon,
   useMediaQuery 
 } from "@chakra-ui/react";
-import { HamburgerIcon, ArrowLeftIcon, ArrowRightIcon, StarIcon } from "@chakra-ui/icons";
+import { ArrowLeftIcon, ArrowRightIcon, StarIcon } from "@chakra-ui/icons";
 import { BiLogOut } from "react-icons/bi";
 import { MdOutlineDashboard } from "react-icons/md";
+import { SiEthereum } from "react-icons/si";
 import { AiOutlineApi, AiOutlineUser, AiOutlineLogin, AiOutlineUserAdd } from "react-icons/ai";
 import NavItem from "./NavItem";
 import { Link as ReactDomLink } from "react-router-dom";
@@ -93,6 +94,14 @@ export default function Sidebar(props) {
           title="NFTs"
           description="The place where Users can check their NFTs holdings."
           path={PATHS.NFTEXPLORER}
+        />
+
+        <NavItem
+          navSize={navSize}
+          icon={SiEthereum}
+          title="Chain"
+          description="The place where Users can check their crypto holdings in the different blockchain ecosystems."
+          path={PATHS.CHAINBALANCES}
         />
 
         <IconButton
