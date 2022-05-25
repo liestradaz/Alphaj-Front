@@ -15,7 +15,6 @@ import {
 export default function App() {
   const {user, authenticate, handleLogout } = useContext(UserContext);
 
-  console.log("appuser",user)
   return (
     <div className="App">
     {/* <Navbar handleLogout={handleLogout} user={user} />  */}

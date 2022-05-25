@@ -6,6 +6,7 @@ import ProtectedPage from "../pages/ProtectedPage";
 import ExchangeAccount from "../pages/exchanges";
 import Dashboard from "../pages/Dashboard";
 import OrderDetail from "../pages/OrderDetail";
+import TradeDetail from "../pages/TradeDetail";
 import NftExplorer from "../pages/NftExplorer";
 import UserPage from "../pages/UserPage";
 import * as PATHS from "../utils/paths";
@@ -50,6 +51,14 @@ const routes = (props) => {
       ),
     },
     {
+      path: PATHS.TRADEDETAIL,
+      element: user ? (
+        <TradeDetail {...props} />
+      ) : (
+        <Navigate to={PATHS.LOGINPAGE} replace />
+      ),
+    },
+    {
       path: PATHS.ORDERDETAIL,
       element: user ? (
         <OrderDetail {...props} />
@@ -62,7 +71,7 @@ const routes = (props) => {
       element: user ? (
         <NftExplorer {...props} />
       ) : (
-        <Navigate to={PATHS.NFTEXPLORER} replace />
+        <Navigate to={PATHS.LOGINPAGE} replace />
       ),
     },
     {

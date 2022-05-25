@@ -24,13 +24,13 @@ const headerConfig =  {
   } 
 
   function roundNumber(value, exp, type="round") {
-    // if exp not defined or zero
+    // if exp not defined or zero...
     if (typeof exp === 'undefined' || +exp === 0) {
       return Math[type](value);
     }
     value = +value;
     exp = +exp;
-    // if value not a number or exp not an integer
+    // if value not a number or exp not an integer...
     if (isNaN(value) || !(typeof exp === 'number' && exp % 1 === 0)) {
       return NaN;
     }
@@ -43,7 +43,7 @@ const headerConfig =  {
   }
 
 
-function TradesTable(props){
+function OrdersTable(props){
     const [trades, setTrades] = useState([]);
     const [showSensibleData, setShowSensibleData] = useState(false)
 
@@ -54,13 +54,13 @@ function TradesTable(props){
     const toggleShowButton = () => setShowSensibleData(!showSensibleData);
 
     const handleOnCLickRow = (id) => {
-      navigate(`/trades/${id}`)
+      navigate(`/orders/${id}`)
     }
 
     useEffect(() => {
       if (props.user) {
         axios
-          .get(`${API_URL}/api/trades`, headerConfig )
+          .get(`${API_URL}/api/trades/orders`, headerConfig )
           .then((response) => setTrades(response.data))
           .catch((err) => console.log(err));
       }
@@ -69,7 +69,7 @@ function TradesTable(props){
       useEffect(() => {
         if (props.user){
           axios
-            .get(`${API_URL}/api/trades`, headerConfig )
+            .get(`${API_URL}/api/trades/orders`, headerConfig )
             .then((response) => setTrades(response.data))
             .catch((err) => console.log(err));
         }
@@ -86,16 +86,14 @@ function TradesTable(props){
           <Thead>
             <Tr>
               <Th textAlign="center">Symbol:</Th>
-              <Th textAlign="center">Name:</Th>
+              <Th textAlign="center">Account Name:</Th>
               <Th textAlign="center">Exchange:</Th>
               <Th textAlign="center">Type:</Th>
               <Th textAlign="center">Side:</Th>
               <Th textAlign="center">Contracts:</Th>
-              <Th textAlign="center">Avg. Entry Price:</Th>
-              <Th textAlign="center">Avg. Exit Price:</Th>
-              <Th textAlign="center">Profit:</Th>
-              <Th textAlign="center">Entry Date:</Th>
-              <Th textAlign="center">Exit Date:</Th>
+              <Th textAlign="center">Avg. Price:</Th>
+              <Th textAlign="center">Cost:</Th>
+              <Th textAlign="center">Date:</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -105,14 +103,12 @@ function TradesTable(props){
                   <Td textAlign="center">{trade.symbol.toUpperCase()}</Td>
                   <Td textAlign="center">{trade.account.name}</Td>
                   <Td textAlign="center">{trade.account.exchange}</Td>
-                  <Td textAlign="center">{trade.type && trade.type.toUpperCase()}</Td>
-                  <Td textAlign="center">{trade.side && trade.side.toUpperCase()}</Td> 
+                  <Td textAlign="center">{trade.type.toUpperCase()}</Td>
+                  <Td textAlign="center">{trade.side.toUpperCase()}</Td> 
                   <Td textAlign="center">{showSensibleData ? roundNumber(trade.contracts, -4) : "****"}</Td> 
-                  <Td textAlign="center">{"$"+roundNumber(trade.avgEntry, -4)}</Td> 
-                  <Td textAlign="center">{"$"+roundNumber(trade.avgExit, -4)}</Td> 
-                  <Td textAlign="center">{showSensibleData ?  "$"+roundNumber(trade.profit, -4) : "****"}</Td> 
-                  <Td textAlign="center">{moment(trade.entryDate).format("DD/MM/YY, h:mm a")}</Td> 
-                  <Td textAlign="center">{moment(trade.exitDate).format("DD/MM/YY, h:mm a")}</Td> 
+                  <Td textAlign="center">{"$"+roundNumber(trade.avgPriceOrder, -4)}</Td> 
+                  <Td textAlign="center">{showSensibleData ?  "$"+roundNumber(trade.cost, -4) : "****"}</Td> 
+                  <Td textAlign="center">{moment(trade.date).format("DD/MM/YY, h:mm a, h:mm a")}</Td> 
                 </Tr>
               );
             })}
@@ -124,4 +120,4 @@ function TradesTable(props){
 
 }
 
-export default TradesTable
+export default OrdersTable

@@ -53,17 +53,17 @@ const removeStringChar = (str) => {
 
 }
 
-function OrderDetail(props) {
-  const { orderId } = useParams();
-  const [order, setOrder] = useState();
+function TradeDetail(props) {
+  const { tradeId } = useParams();
+  const [trade, setTrade] = useState();
   const [showSensibleData, setShowSensibleData] = useState(false)
 
   const toggleShowButton = () => setShowSensibleData(!showSensibleData);
 
   useEffect(() => {
     axios
-      .get(`${API_URL}/api/trades/orders/${orderId}`, headerConfig)
-      .then((response) => setOrder(response.data))
+      .get(`${API_URL}/api/trades/${tradeId}`, headerConfig)
+      .then((response) => setTrade(response.data))
       .catch((err) => console.log(err));
   }, []);
 
@@ -78,33 +78,39 @@ function OrderDetail(props) {
           </Button> 
           <Wrap mt={9} spacing= {{base: '30px', md: '20px', sm:"5"}} justify='center'>
             <WrapItem>
-              <DetailCard label={"Symbol"} data={order ? order.symbol.toUpperCase() : ""} />
+              <DetailCard label={"Symbol"} data={trade ? trade.symbol.toUpperCase() : ""} />
             </WrapItem>
             <WrapItem>
-              <DetailCard label={"Side"} data={order ? order.side.toUpperCase() : ""} />
+              <DetailCard label={"Side"} data={trade ? trade.side.toUpperCase() : ""} />
             </WrapItem>
             <WrapItem>
               <DetailCard
                 label={"Contracts"}
-                data={showSensibleData ? order ? roundNumber(order.contracts, -4) : "" : "****"}
+                data={showSensibleData ? trade ? roundNumber(trade.contracts, -4) : "" : "****"}
               />
             </WrapItem>
             <WrapItem>
               <DetailCard
-                label={"Avg Price"}
-                data={order ? "$"+ roundNumber(order.avgPriceOrder, -4) : ""}
+                label={"Avg Entry Price"}
+                data={trade ? "$"+ roundNumber(trade.avgEntry, -4) : ""}
               />
             </WrapItem>
             <WrapItem>
-              <DetailCard label={"Cost"} data={showSensibleData ? order ? "$"+roundNumber(order.cost, -4) : "" : "****"} />
+              <DetailCard
+                label={"Avg Exit Price"}
+                data={trade ? "$"+ roundNumber(trade.avgExit, -4) : ""}
+              />
             </WrapItem>
             <WrapItem>
-              <DetailCard label={"Date"} data={order ? moment(order.date).format("MMM DD YYYY, h:mm:ss a") : ""} />
+              <DetailCard label={"Entry Date"} data={trade ? moment(trade.entryDate).format("MMM DD YYYY, h:mm:ss a") : ""} />
+            </WrapItem>
+            <WrapItem>
+              <DetailCard label={"Exit Date"} data={trade ? moment(trade.exitDate).format("MMM DD YYYY, h:mm:ss a") : ""} />
             </WrapItem>
           </Wrap>
 
           <TradingViewWidget
-            symbol={order ? `${order.account.exchange.toUpperCase()}:${removeStringChar(order.symbol)}` : "BITSO: BTCMXN"}
+            symbol={trade ? `${trade.account.exchange.toUpperCase()}:${removeStringChar(trade.symbol)}` : "BITSO: BTCMXN"}
             allow_symbol_change={false}
             hide_side_toolbar={false}
             theme={useColorModeValue(Themes.LIGHT, Themes.DARK)}
@@ -115,4 +121,4 @@ function OrderDetail(props) {
   );
 }
 
-export default OrderDetail;
+export default TradeDetail;
