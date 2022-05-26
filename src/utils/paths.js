@@ -8,4 +8,5 @@ export const ORDERDETAIL = "/orders/:orderId";
 export const TRADEDETAIL = "/trades/:tradeId";
 export const NFTEXPLORER = "/nftexplorer"
 export const CHAINBALANCES = "/chainbalances"
+export const ERROR404 = "*"
 

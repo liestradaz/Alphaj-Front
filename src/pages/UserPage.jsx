@@ -13,6 +13,8 @@ import {
   Box,
   FormControl,
   FormLabel,
+  Alert,
+  AlertIcon,
 } from "@chakra-ui/react";
 import * as USER_HELPERS from "../utils/userToken";
 
@@ -20,6 +22,8 @@ function UserPage(props) {
   const [username, setUsername] = useState(props.user.username);
   const [email, setEmail] = useState(props.user.email);
   const [walletAddress, setWalletAddress] = useState(props.user.walletAddress);
+  const [error, setError] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const handleUsernameInput = (event) => setUsername(event.target.value);
   const handleEmailInput = (event) => setEmail(event.target.value);
@@ -41,14 +45,15 @@ function UserPage(props) {
           },
         }
       )
-      .then(() => {
+      .then((response) => {
+        console.log("res:", response);
+        setSuccess(true);
         const accessToken = USER_HELPERS.getUserToken();
         getLoggedIn(accessToken).then((res) => {
           props.setUser(res.data.user);
         });
-
       })
-      .catch((err) => console.log(err));
+      .catch((err) => setError(true));
   }
 
   return (
@@ -64,7 +69,16 @@ function UserPage(props) {
           flexDir={"column"}
           alignItems="center"
         >
-          <Box w="360px" p="5" borderWidth="1px" display='flex' flexDir={"column"} mt='2' alignItems='center' borderRadius={"30px"}>
+          <Box
+            w="360px"
+            p="5"
+            borderWidth="1px"
+            display="flex"
+            flexDir={"column"}
+            mt="2"
+            alignItems="center"
+            borderRadius={"30px"}
+          >
             <Heading size="lg" mb="5">
               Profile
             </Heading>
@@ -91,7 +105,9 @@ function UserPage(props) {
                 </FormControl>
 
                 <FormControl>
-                  <FormLabel htmlFor="walletAddress">Add Wallet Address</FormLabel>
+                  <FormLabel htmlFor="walletAddress">
+                    Add Wallet Address
+                  </FormLabel>
                   <Input
                     id="walletAddress"
                     value={walletAddress}
@@ -105,7 +121,19 @@ function UserPage(props) {
                 </Button>
               </Stack>
             </form>
-            </Box>
+                {success && !error && (
+                  <Alert status="success" mt={3} borderRadius="30px">
+                    <AlertIcon />
+                    Data updated to the server!
+                  </Alert>
+                )}
+                {!success && error && (
+                  <Alert status="error" mt={3} borderRadius="30px">
+                    <AlertIcon />
+                    There was an error processing your request
+                  </Alert>
+                )}
+          </Box>
         </Box>
       </Flex>
     </>
