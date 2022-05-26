@@ -12,7 +12,6 @@ import {
   Stack,
   Button,
 } from "@chakra-ui/react";
-import { API_URL } from "../utils/consts";
 import * as USER_HELPERS from "../utils/userToken";
 import TradingViewWidget, { Themes } from "react-tradingview-widget";
 import * as utilFunction from "../utils/utilFunctions";
@@ -37,7 +36,7 @@ function TradeDetail(props) {
 
   useEffect(() => {
     axios
-      .get(`${API_URL}/api/trades/${tradeId}`, headerConfig)
+      .get(`${process.env.REACT_APP_SERVER_URL}/trades/${tradeId}`, headerConfig)
       .then((response) => setTrade(response.data))
       .catch((err) => console.log(err));
   }, []);

@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { API_URL } from "../utils/consts";
 import {
   Table,
   Thead,
@@ -46,7 +45,7 @@ function TradesTable(props) {
   useEffect(() => {
     if (props.user && headerConfig?.headers?.Authorization) {
       axios
-        .get(`${API_URL}/api/trades`, headerConfig)
+        .get(`${process.env.REACT_APP_SERVER_URL}/trades`, headerConfig)
         .then((response) => setTrades(response.data))
         .catch((err) => console.log(err));
     }

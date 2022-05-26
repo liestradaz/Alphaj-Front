@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getLoggedIn } from "../services/auth";
 import axios from "axios";
-import { API_URL } from "../utils/consts";
 import Sidebar from "../components/Sidebar/Sidebar";
 import Navbar from "../components/Navbar/Navbar";
 import {
@@ -34,7 +33,7 @@ function UserPage(props) {
 
     axios
       .put(
-        `${API_URL}/api/auth/user/${props.user._id}`,
+        `${process.env.REACT_APP_SERVER_URL}/auth/user/${props.user._id}`,
         { username, email, walletAddress },
         {
           headers: {

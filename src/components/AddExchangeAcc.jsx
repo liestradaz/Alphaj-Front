@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { API_URL } from "../utils/consts";
 import {
   Container,
   Stack,
@@ -36,7 +35,7 @@ function AddExchangeAcc() {
 
     axios
       .post(
-        `${API_URL}/api/accounts`,
+        `${process.env.REACT_APP_SERVER_URL}/accounts`,
         { exchange, name, subAcc, apiKey, apiSecret },
         {
           headers: {

@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { API_URL } from "../utils/consts";
 import {
   Table,
   Thead,
@@ -25,21 +24,21 @@ function ExchangeAccTable() {
 
   useEffect(() => {
     axios
-      .get(`${API_URL}/api/accounts`, headerConfig )
+      .get(`${process.env.REACT_APP_SERVER_URL}/accounts`, headerConfig )
       .then((response) => setAccounts(response.data))
       .catch((err) => console.log(err));
   }, []);
 
   useEffect(() => {
     axios
-      .get(`${API_URL}/api/accounts`, headerConfig)
+      .get(`${process.env.REACT_APP_SERVER_URL}/accounts`, headerConfig)
       .then((response) => setAccounts(response.data))
       .catch((err) => console.log(err));
   }, [accounts]);
 
   const handleDeleteButton = (accountId) => {
     axios
-      .delete(`${API_URL}/api/accounts/${accountId}`, headerConfig)
+      .delete(`${process.env.REACT_APP_SERVER_URL}/accounts/${accountId}`, headerConfig)
       .then(() => navigate("/accounts"))
       .catch((err) => console.log(err));
   };

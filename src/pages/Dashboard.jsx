@@ -2,8 +2,6 @@ import TradesTable from "../components/TradesTable";
 import OrdersTable from "../components/OrdersTable";
 import Sidebar from "../components/Sidebar/Sidebar";
 import Navbar from "../components/Navbar/Navbar";
-import { useContext } from "react";
-import { UserContext } from "../context/user.context";
 import {
   Flex,
   Box,
