@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_URL } from "../utils/consts";
 import {
@@ -15,27 +15,10 @@ import {
 } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon} from "@chakra-ui/icons";
 import * as USER_HELPERS from "../utils/userToken";
+import * as utilFunction from "../utils/utilFunctions";
+import NumberFormat from "react-number-format";
 
 const moment = require("moment")
-
-  function roundNumber(value, exp, type="round") {
-    // if exp not defined or zero...
-    if (typeof exp === 'undefined' || +exp === 0) {
-      return Math[type](value);
-    }
-    value = +value;
-    exp = +exp;
-    // if value not a number or exp not an integer...
-    if (isNaN(value) || !(typeof exp === 'number' && exp % 1 === 0)) {
-      return NaN;
-    }
-    // Shift
-    value = value.toString().split('e');
-    value = Math[type](+(value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp)));
-    // Shift back
-    value = value.toString().split('e');
-    return +(value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp));
-  }
 
 function OrdersTable(props){
     const [trades, setTrades] = useState([]);
@@ -95,9 +78,23 @@ function OrdersTable(props){
                   <Td textAlign="center">{trade.account.exchange}</Td>
                   <Td textAlign="center">{trade.type.toUpperCase()}</Td>
                   <Td textAlign="center">{trade.side.toUpperCase()}</Td> 
-                  <Td textAlign="center">{showSensibleData ? roundNumber(trade.contracts, -4) : "****"}</Td> 
-                  <Td textAlign="center">{"$"+roundNumber(trade.avgPriceOrder, -4)}</Td> 
-                  <Td textAlign="center">{showSensibleData ?  "$"+roundNumber(trade.cost, -4) : "****"}</Td> 
+                  <Td textAlign="center">{showSensibleData ?  <NumberFormat
+                      value={utilFunction.roundNumber(trade.contracts, -4)}
+                      displayType={"text"}
+                      thousandSeparator={true}
+                    /> : "****"}</Td> 
+                  <Td textAlign="center"><NumberFormat
+                      value={utilFunction.roundNumber(trade.avgPriceOrder, -4)}
+                      displayType={"text"}
+                      thousandSeparator={true}
+                      prefix={"$"}
+                    /></Td> 
+                  <Td textAlign="center">{showSensibleData ? <NumberFormat
+                      value={utilFunction.roundNumber(trade.cost, -4)}
+                      displayType={"text"}
+                      thousandSeparator={true}
+                      prefix={"$"}
+                    /> : "****"}</Td> 
                   <Td textAlign="center">{moment(trade.date).format("DD/MM/YY, h:mm a, h:mm a")}</Td> 
                 </Tr>
               );

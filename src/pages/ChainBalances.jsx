@@ -10,17 +10,17 @@ import {
   Text,
   Heading,
   Image,
-  AspectRatio,
   Container,
   Link,
   Center,
   VStack,
-  HStack,
+  useColorModeValue
 } from "@chakra-ui/react";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
-import { Link as ReactDomLink } from "react-router-dom";
+import { Link as ReactDomLink, useLocation } from "react-router-dom";
 import ReactApexCharts from "react-apexcharts";
 import * as utilFunction from "../utils/utilFunctions";
+import NumberFormat from 'react-number-format';
 
 const DEBANK_URL = "https://openapi.debank.com";
 
@@ -29,6 +29,8 @@ function ChainBalances(props) {
   const [balance, setBalance] = useState(0);
   const [balanceList, setBalanceList] = useState([]);
   const [balanceListLabel, setBalanceListLabel] = useState([]);
+
+  let location = useLocation();
 
   useEffect(() => {
     if (props.user.walletAddress) {
@@ -44,7 +46,8 @@ function ChainBalances(props) {
     } else {
       setChainList([]);
     }
-  }, []);
+  
+}, []);
 
   useEffect(() => {
     if (chainList.length > 0) {
@@ -80,6 +83,12 @@ function ChainBalances(props) {
       },
     ],
     labels: balanceListLabel,
+    legend: {
+      labels: {
+        colors: useColorModeValue("#000000", "#FFFFFF"),
+    },
+    },
+
   };
 
   return (
@@ -114,7 +123,7 @@ function ChainBalances(props) {
                 <Text fontWeight={"700"} fontSize="md">
                   Total Balance:
                 </Text>
-                <Text> ${utilFunction.roundNumber(balance, -4)}</Text>
+                <Text><NumberFormat value={utilFunction.roundNumber(balance, -2)} displayType={'text'} thousandSeparator={true} prefix={'$'} /></Text>
               </Container>
               </Center>
             </WrapItem>
@@ -174,7 +183,7 @@ function ChainBalances(props) {
                             </Text>
 
                             <Text fontSize="md" as="em">
-                              ${utilFunction.roundNumber(chain.usd_value, -4)}
+                            <NumberFormat value={utilFunction.roundNumber(chain.usd_value, -2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />
                             </Text>
                           </Box>
                         </Flex>

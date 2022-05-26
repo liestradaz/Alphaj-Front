@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getLoggedIn } from "../services/auth";
 import axios from "axios";
 import { API_URL } from "../utils/consts";
 import Sidebar from "../components/Sidebar/Sidebar";
@@ -42,6 +43,10 @@ function UserPage(props) {
         }
       )
       .then(() => {
+        const accessToken = USER_HELPERS.getUserToken();
+        getLoggedIn(accessToken).then((res) => {
+          props.setUser(res.data.user);
+        });
 
       })
       .catch((err) => console.log(err));

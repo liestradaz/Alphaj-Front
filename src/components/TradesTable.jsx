@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_URL } from "../utils/consts";
 import {
@@ -11,73 +11,125 @@ import {
   Td,
   TableContainer,
   Button,
-  useColorModeValue
+  useColorModeValue,
+  Box,
 } from "@chakra-ui/react";
-import { ViewIcon, ViewOffIcon} from "@chakra-ui/icons";
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import * as USER_HELPERS from "../utils/userToken";
+import * as utilFunction from "../utils/utilFunctions";
+import NumberFormat from "react-number-format";
 
-const moment = require("moment")
+import ReactApexCharts from "react-apexcharts";
 
+const moment = require("moment");
 
+function TradesTable(props) {
+  const [trades, setTrades] = useState([]);
+  const [pnlState, setPnlState] = useState({});
+  const [showSensibleData, setShowSensibleData] = useState(false);
 
-  function roundNumber(value, exp, type="round") {
-    // if exp not defined or zero
-    if (typeof exp === 'undefined' || +exp === 0) {
-      return Math[type](value);
+  const navigate = useNavigate();
+
+  const toggleShowButton = () => setShowSensibleData(!showSensibleData);
+  const hoverBg = useColorModeValue("#AEC8CA", "#445859");
+
+  const headerConfig = {
+    headers: {
+      Authorization: USER_HELPERS.getUserToken(),
+    },
+  };
+
+  const handleOnCLickRow = (id) => {
+    navigate(`/trades/${id}`);
+  };
+
+  useEffect(() => {
+    if (props.user && headerConfig?.headers?.Authorization) {
+      axios
+        .get(`${API_URL}/api/trades`, headerConfig)
+        .then((response) => setTrades(response.data))
+        .catch((err) => console.log(err));
     }
-    value = +value;
-    exp = +exp;
-    // if value not a number or exp not an integer
-    if (isNaN(value) || !(typeof exp === 'number' && exp % 1 === 0)) {
-      return NaN;
+  }, [props.user, headerConfig.headers.Authorization]);
+
+  useEffect(() => {
+    if (trades.length > 0) {
+      const pnlData = {};
+      let prevProfit = 0;
+      trades.forEach((trade, idx) => {
+        if (
+          !Object.keys(pnlData).includes(
+            moment(trade.exitDate).format("MM/DD/YY")
+          )
+        ) {
+          pnlData[moment(trade.exitDate).format("MM/DD/YY")] =
+            prevProfit + trade.profit;
+        } else {
+          pnlData[moment(trade.exitDate).format("MM/DD/YY")] =
+            pnlData[moment(trade.exitDate).format("MM/DD/YY")] + trade.profit;
+        }
+        prevProfit = pnlData[moment(trade.exitDate).format("MM/DD/YY")];
+      });
+      setPnlState(pnlData);
     }
-    // Shift
-    value = value.toString().split('e');
-    value = Math[type](+(value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp)));
-    // Shift back
-    value = value.toString().split('e');
-    return +(value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp));
-  }
+  }, [trades]);
 
-
-function TradesTable(props){
-    const [trades, setTrades] = useState([]);
-    const [showSensibleData, setShowSensibleData] = useState(false)
-
-    const navigate = useNavigate();
-
-    const toggleShowButton = () => setShowSensibleData(!showSensibleData);
-    
-    const headerConfig =  {
-      headers: {
-        Authorization: USER_HELPERS.getUserToken()
+  const optionsChart = {
+    chart: {
+      height: 350,
+      type: "area",
+    },
+    dataLabels: {
+      enabled: false,
+    },
+    stroke: {
+      curve: "smooth",
+    },
+    xaxis: {
+      categories: Object.keys(pnlState),
+      labels: {
+        style: {
+          colors: useColorModeValue("#000000", "#FFFFFF"),
       },
-    } 
-    
-    const handleOnCLickRow = (id) => {
-      navigate(`/trades/${id}`)
-    }
+      },
+    },
+    yaxis: {
+      labels: {
+        style: {
+          colors: useColorModeValue("#000000", "#FFFFFF"),
+      },
+        formatter: function (value) {
+          return showSensibleData ? "$" + value : "****";
+        },
+      },
+    },
+  };
 
-    useEffect(() => {
-      if (props.user && headerConfig?.headers?.Authorization) {
+  const seriesChart = [
+    {
+      name: "series1",
+      data: Object.values(pnlState),
+    },
+  ];
 
-        axios
-          .get(`${API_URL}/api/trades`, headerConfig )
-          .then((response) => setTrades(response.data))
-          .catch((err) => console.log(err));
-      }
-      }, [props.user, headerConfig.headers.Authorization]);
+  return (
+    <>
+      <Button onClick={toggleShowButton}>
+        {showSensibleData ? "Hide Sensible Data" : "Show Sensible Data"}
+        {showSensibleData ? <ViewOffIcon ml={"2"} /> : <ViewIcon ml={"2"} />}
+      </Button>
 
-      const hoverBg = useColorModeValue("#AEC8CA", "#445859")
-      return (
-          <>
-           <Button onClick={toggleShowButton}>
-            {showSensibleData ? "Hide Sensible Data" : "Show Sensible Data"}
-            {showSensibleData ?  <ViewOffIcon ml={"2"}/> :  <ViewIcon ml={"2"}/>}
+      <Box>
+        <ReactApexCharts
+          options={optionsChart}
+          series={seriesChart}
+          type="area"
+          height={350}
+        />
+      </Box>
 
-          </Button> 
-          <TableContainer overflowX={"scroll"}>
-        <Table variant="simple" size='sm' mt={5} >
+      <TableContainer overflowX={"scroll"}>
+        <Table variant="simple" size="sm" mt={5}>
           <Thead>
             <Tr>
               <Th textAlign="center">Symbol:</Th>
@@ -96,27 +148,73 @@ function TradesTable(props){
           <Tbody>
             {trades.map((trade) => {
               return (
-                <Tr key={trade._id} _hover={{background:hoverBg}} onClick={()=>handleOnCLickRow(trade._id)} >
+                <Tr
+                  key={trade._id}
+                  _hover={{ background: hoverBg }}
+                  onClick={() => handleOnCLickRow(trade._id)}
+                >
                   <Td textAlign="center">{trade.symbol.toUpperCase()}</Td>
                   <Td textAlign="center">{trade.account.name}</Td>
                   <Td textAlign="center">{trade.account.exchange}</Td>
-                  <Td textAlign="center">{trade.type && trade.type.toUpperCase()}</Td>
-                  <Td textAlign="center">{trade.side && trade.side.toUpperCase()}</Td> 
-                  <Td textAlign="center">{showSensibleData ? roundNumber(trade.contracts, -4) : "****"}</Td> 
-                  <Td textAlign="center">{"$"+roundNumber(trade.avgEntry, -4)}</Td> 
-                  <Td textAlign="center">{"$"+roundNumber(trade.avgExit, -4)}</Td> 
-                  <Td textAlign="center">{showSensibleData ?  "$"+roundNumber(trade.profit, -4) : "****"}</Td> 
-                  <Td textAlign="center">{moment(trade.entryDate).format("DD/MM/YY, h:mm a")}</Td> 
-                  <Td textAlign="center">{moment(trade.exitDate).format("DD/MM/YY, h:mm a")}</Td> 
+                  <Td textAlign="center">
+                    {trade.type && trade.type.toUpperCase()}
+                  </Td>
+                  <Td textAlign="center">
+                    {trade.side && trade.side.toUpperCase()}
+                  </Td>
+                  <Td textAlign="center">
+                    {showSensibleData ? (
+                      <NumberFormat
+                        value={utilFunction.roundNumber(trade.contracts, -4)}
+                        displayType={"text"}
+                        thousandSeparator={true}
+                      />
+                    ) : (
+                      "****"
+                    )}
+                  </Td>
+                  <Td textAlign="center">
+                    <NumberFormat
+                      value={utilFunction.roundNumber(trade.avgEntry, -4)}
+                      displayType={"text"}
+                      thousandSeparator={true}
+                      prefix={"$"}
+                    />
+                  </Td>
+                  <Td textAlign="center">
+                    <NumberFormat
+                      value={utilFunction.roundNumber(trade.avgExit, -4)}
+                      displayType={"text"}
+                      thousandSeparator={true}
+                      prefix={"$"}
+                    />
+                  </Td>
+                  <Td textAlign="center">
+                    {showSensibleData ? (
+                      <NumberFormat
+                        value={utilFunction.roundNumber(trade.profit, -4)}
+                        displayType={"text"}
+                        thousandSeparator={true}
+                        prefix={"$"}
+                      />
+                    ) : (
+                      "****"
+                    )}
+                  </Td>
+                  <Td textAlign="center">
+                    {moment(trade.entryDate).format("DD/MM/YY, h:mm a")}
+                  </Td>
+                  <Td textAlign="center">
+                    {moment(trade.exitDate).format("DD/MM/YY, h:mm a")}
+                  </Td>
                 </Tr>
               );
             })}
           </Tbody>
         </Table>
       </TableContainer>
-          </>
-      )
-
+    </>
+  );
 }
 
-export default TradesTable
+export default TradesTable;

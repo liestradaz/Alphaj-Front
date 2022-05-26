@@ -2,7 +2,6 @@ import { Navigate } from "react-router-dom";
 import HomePage from "../pages/HomePage";
 import Login from "../pages/LogIn";
 import Signup from "../pages/Signup";
-import ProtectedPage from "../pages/ProtectedPage";
 import ExchangeAccount from "../pages/exchanges";
 import Dashboard from "../pages/Dashboard";
 import OrderDetail from "../pages/OrderDetail";
@@ -79,14 +78,6 @@ const routes = (props) => {
       path: PATHS.CHAINBALANCES,
       element: user ? (
         <ChainBalances {...props} />
-      ) : (
-        <Navigate to={PATHS.LOGINPAGE} replace />
-      ),
-    },
-    {
-      path: PATHS.PROTECTEDPAGE,
-      element: user ? (
-        <ProtectedPage {...props} />
       ) : (
         <Navigate to={PATHS.LOGINPAGE} replace />
       ),

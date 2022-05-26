@@ -18,37 +18,17 @@ import {
 } from "@chakra-ui/react";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { Link as ReactDomLink } from "react-router-dom";
-import { useContext } from 'react';
-import { UserContext } from "../context/user.context";
+import * as utilFunction from "../utils/utilFunctions";
+import NumberFormat from 'react-number-format';
+
 
 const DEBANK_URL = "https://openapi.debank.com";
 
 function NftExplorer(props) {
-  /* const {nftListCtx } = useContext(UserContext); */
-  /* const [nftList, setNftList] = useState(nftListCtx); */
   const [nftList, setNftList] = useState([]);
 
-/*   useEffect(() => {
-    if (props.user.walletAddress){
-      axios
-        .get(
-          `${DEBANK_URL}/v1/user/nft_list?id=${props.user.walletAddress}` 
-        )
-        .then((response) => {
-          if (response.data.length>25){
-            setNftList(response.data.slice(0,26))
-          } else {
-            setNftList(response.data)
-          }
-        })
-        .catch((err) => console.log(err));
-    } else {
-      setNftList([])
-    }
-  }, []); */
-
   useEffect(() => {
-    if (props.user.walletAddress){
+    if (props.user.walletAddress && nftList.length === 0){
       axios
         .get(
           `${DEBANK_URL}/v1/user/nft_list?id=${props.user.walletAddress}` 
@@ -66,31 +46,6 @@ function NftExplorer(props) {
       setNftList([])
     }
   }, []);
-
-
-  useEffect(() => {
-
-    if (props.user.walletAddress){
-      axios
-        .get(
-          `${DEBANK_URL}/v1/user/nft_list?id=${props.user.walletAddress}` 
-        )
-        .then((response) => {
-
-          if (response.data.length>25){
-            setNftList(response.data.slice(0,26))
-          } else {
-            setNftList(response.data)
-          }
-        })
-        .catch((err) => console.log(err));
-    } else {
-      setNftList([])
-    }
-  }, [nftList]);
-
-  
- 
 
   return (
     <>
@@ -151,6 +106,12 @@ function NftExplorer(props) {
                           {nft.contract_name}
                         </Text>
                       )}
+                      
+                      {nft.content_type && nft.content && (
+                        <Text fontSize="md" as="em">
+                          {nft.name}
+                        </Text>
+                      )}
                       {nft.content_type && nft.content && (
                         <span>
                           <Link href={nft.detail_url} isExternal>
@@ -158,13 +119,8 @@ function NftExplorer(props) {
                           </Link>
                         </span>
                       )}
-                      {nft.content_type && nft.content && (
-                        <Text fontSize="md" as="em">
-                          {nft.name}
-                        </Text>
-                      )}
                       {nft.content_type && nft.content && nft.usd_price && (
-                        <Text>${nft.usd_price}</Text>
+                        <Text><NumberFormat value={utilFunction.roundNumber(nft.usd_price, -2)} displayType={'text'} thousandSeparator={true} prefix={'$'} /></Text>
                       )}
                     </Container>
                   </WrapItem>

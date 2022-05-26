@@ -3,16 +3,12 @@ import * as USER_HELPERS from "../utils/userToken";
 import { getLoggedIn, logout } from "../services/auth";
 import LoadingComponent from "../components/Loading";
 import { useLocation } from "react-router-dom";
-import axios from 'axios';
 
 const UserContext = createContext();
-
-const DEBANK_URL = "https://openapi.debank.com";
 
 function UserProviderWrapper(props) {
     const [user, setUser] = useState(null);
 const [isLoading, setIsLoading] = useState(true);
-const [nftListCtx, setNftListCtx] = useState([]);
 
 let location = useLocation();
 
@@ -30,10 +26,6 @@ let location = useLocation();
       setIsLoading(false);
     });
   }, [location]);
-
-/*   useEffect(()=>{
-    getNftList(user)
-  },[user]) */
 
   function handleLogout() {
     const accessToken = USER_HELPERS.getUserToken();
@@ -57,34 +49,12 @@ let location = useLocation();
     setUser(user);
   }
 
-  function getNftList(user){
-    console.log("entramos", user)
-    if (user?.walletAddress){
-      console.log("entramos2", user)
-      axios
-        .get(
-          `${DEBANK_URL}/v1/user/nft_list?id=${user.walletAddress}` 
-        )
-        .then((response) => {
-          console.log("response", response.data.length)
-          if (response.data.length>25){
-            setNftListCtx(response.data.slice(0,26))
-          } else {
-            setNftListCtx(response.data)
-          }
-          })
-        .catch((err) => console.log(err));
-    } else {
-      setNftListCtx([])
-    }
-  }
-
   if (isLoading) {
     return <LoadingComponent />;
   }
  
     return (
-      <UserContext.Provider value={{user, authenticate, handleLogout, nftListCtx }}>
+      <UserContext.Provider value={{user, authenticate, handleLogout, setUser }}>
           {props.children}
       </UserContext.Provider>
     )
