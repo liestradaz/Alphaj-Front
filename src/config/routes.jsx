@@ -10,6 +10,7 @@ import NftExplorer from "../pages/NftExplorer";
 import UserPage from "../pages/UserPage";
 import * as PATHS from "../utils/paths";
 import ChainBalances from "../pages/ChainBalances";
+import Error404 from "../pages/Error404";
 
 const routes = (props) => {
   const { user } = props;
@@ -81,6 +82,10 @@ const routes = (props) => {
       ) : (
         <Navigate to={PATHS.LOGINPAGE} replace />
       ),
+    },
+    {
+      path: PATHS.ERROR404,
+      element: <Error404 {...props} />,
     },
   ];
 };

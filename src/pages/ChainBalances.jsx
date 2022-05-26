@@ -14,13 +14,13 @@ import {
   Link,
   Center,
   VStack,
-  useColorModeValue
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { Link as ReactDomLink, useLocation } from "react-router-dom";
 import ReactApexCharts from "react-apexcharts";
 import * as utilFunction from "../utils/utilFunctions";
-import NumberFormat from 'react-number-format';
+import NumberFormat from "react-number-format";
 
 const DEBANK_URL = "https://openapi.debank.com";
 
@@ -46,8 +46,7 @@ function ChainBalances(props) {
     } else {
       setChainList([]);
     }
-  
-}, []);
+  }, []);
 
   useEffect(() => {
     if (chainList.length > 0) {
@@ -86,9 +85,8 @@ function ChainBalances(props) {
     legend: {
       labels: {
         colors: useColorModeValue("#000000", "#FFFFFF"),
+      },
     },
-    },
-
   };
 
   return (
@@ -107,37 +105,7 @@ function ChainBalances(props) {
           <Heading size="2xl" mb="5">
             Your Holdings
           </Heading>
-
-          <Wrap spacing={"20"} align='center' justify='center'>
-            <WrapItem>
-              <Center>
-              <Container
-                border={"1px"}
-                maxW="300px"
-                p={5}
-                borderRadius={"30px"}
-                mb={5}
-                textAlign="center"
-
-              >
-                <Text fontWeight={"700"} fontSize="md">
-                  Total Balance:
-                </Text>
-                <Text><NumberFormat value={utilFunction.roundNumber(balance, -2)} displayType={'text'} thousandSeparator={true} prefix={'$'} /></Text>
-              </Container>
-              </Center>
-            </WrapItem>
-            <WrapItem>
-              <Box >
-                <ReactApexCharts
-                  options={optionsPieChart}
-                  series={balanceList}
-                  type="donut"
-                  width="450"
-                />
-              </Box>
-            </WrapItem>
-          </Wrap>
+          
           {chainList && chainList.length === 0 ? (
             <Center
               bg="tomato"
@@ -155,6 +123,43 @@ function ChainBalances(props) {
               </VStack>
             </Center>
           ) : (
+            <>
+            <Wrap spacing={"20"} align="center" justify="center">
+            <WrapItem>
+              <Center>
+                <Container
+                  border={"1px"}
+                  maxW="300px"
+                  p={5}
+                  borderRadius={"30px"}
+                  mb={5}
+                  textAlign="center"
+                >
+                  <Text fontWeight={"700"} fontSize="md">
+                    Total Balance:
+                  </Text>
+                  <Text>
+                    <NumberFormat
+                      value={utilFunction.roundNumber(balance, -2)}
+                      displayType={"text"}
+                      thousandSeparator={true}
+                      prefix={"$"}
+                    />
+                  </Text>
+                </Container>
+              </Center>
+            </WrapItem>
+            <WrapItem>
+              <Box>
+                <ReactApexCharts
+                  options={optionsPieChart}
+                  series={balanceList}
+                  type="donut"
+                  width="450"
+                />
+              </Box>
+            </WrapItem>
+          </Wrap>
             <Wrap spacing="25px" justify="center" mt={10}>
               {chainList.map((chain, idx) => {
                 if (chain.usd_value > 0) {
@@ -183,7 +188,15 @@ function ChainBalances(props) {
                             </Text>
 
                             <Text fontSize="md" as="em">
-                            <NumberFormat value={utilFunction.roundNumber(chain.usd_value, -2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />
+                              <NumberFormat
+                                value={utilFunction.roundNumber(
+                                  chain.usd_value,
+                                  -2
+                                )}
+                                displayType={"text"}
+                                thousandSeparator={true}
+                                prefix={"$"}
+                              />
                             </Text>
                           </Box>
                         </Flex>
@@ -193,6 +206,7 @@ function ChainBalances(props) {
                 }
               })}
             </Wrap>
+            </>
           )}
         </Box>
       </Flex>

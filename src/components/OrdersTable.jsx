@@ -35,7 +35,10 @@ function OrdersTable(props){
       if (props.user && headerConfig?.headers?.Authorization) {
         axios
           .get(`${process.env.REACT_APP_SERVER_URL}/trades/orders`, headerConfig )
-          .then((response) => setTrades(response.data))
+          .then((response) => {
+            const sortedData = response.data.slice().sort((a, b) => utilFunction.sortObject(b,a, "date"))
+            setTrades(sortedData)
+          })
           .catch((err) => console.log(err));
       }
       }, [props.user]);

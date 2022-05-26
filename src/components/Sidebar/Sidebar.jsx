@@ -17,6 +17,7 @@ import { MdOutlineDashboard } from "react-icons/md";
 import { SiEthereum } from "react-icons/si";
 import { AiOutlineApi, AiOutlineUser, AiOutlineLogin, AiOutlineUserAdd } from "react-icons/ai";
 import NavItem from "./NavItem";
+import StatusIndicator from "../StatusIndicator";
 import { Link as ReactDomLink } from "react-router-dom";
 import * as PATHS from "../../utils/paths";
 import * as CONSTS from "../../utils/consts";
@@ -51,10 +52,11 @@ export default function Sidebar(props) {
         as="nav"
       >
         <Flex my={4} align="center">
-          <Avatar size="sm" src="avatar-1.jpg" />
+          <StatusIndicator user={props.user} />
+          {/* <Avatar size="sm" src="avatar-1.jpg" /> */}
           <Flex
             flexDir="column"
-            ml={4}
+            ml={2}
             display={navSize == "small" ? "none" : "flex"}
           >
             <Heading as="h3" size="sm">
