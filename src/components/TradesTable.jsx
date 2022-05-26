@@ -46,7 +46,10 @@ function TradesTable(props) {
     if (props.user && headerConfig?.headers?.Authorization) {
       axios
         .get(`${process.env.REACT_APP_SERVER_URL}/trades`, headerConfig)
-        .then((response) => setTrades(response.data))
+        .then((response) => {
+          const sortedData = response.data.slice().sort((a, b) => utilFunction.sortObject(b,a, "exitDate"))
+          setTrades(sortedData)
+        })
         .catch((err) => console.log(err));
     }
   }, [props.user, headerConfig.headers.Authorization]);
@@ -55,7 +58,8 @@ function TradesTable(props) {
     if (trades.length > 0) {
       const pnlData = {};
       let prevProfit = 0;
-      trades.forEach((trade, idx) => {
+      const sortedData = trades.slice().sort((a, b) => utilFunction.sortObject(a,b, "exitDate"))
+      sortedData.forEach((trade, idx) => {
         if (
           !Object.keys(pnlData).includes(
             moment(trade.exitDate).format("MM/DD/YY")

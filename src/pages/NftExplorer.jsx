@@ -14,7 +14,8 @@ import {
   Container,
   Link,
   Center,
-  VStack
+  VStack,
+  useColorModeValue
 } from "@chakra-ui/react";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { Link as ReactDomLink } from "react-router-dom";
@@ -63,6 +64,7 @@ function NftExplorer(props) {
           <Heading size="2xl" mb="5">
             Your NFT's
           </Heading>
+     
 
           {nftList.length === 0 ? (
           <Center bg='tomato' h='100px' color='white' borderRadius={"30px"} p={50}>

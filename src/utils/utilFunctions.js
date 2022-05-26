@@ -16,3 +16,13 @@ export function roundNumber(value, exp, type="round") {
     value = value.toString().split('e');
     return +(value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp));
   }
+
+  export function sortObject( a, b, key ) {
+    if ( a[key] < b[key] ){
+      return -1;
+    }
+    if ( a[key] > b[key] ){
+      return 1;
+    }
+    return 0;
+  }
