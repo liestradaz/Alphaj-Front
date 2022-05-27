@@ -47,8 +47,10 @@ function TradesTable(props) {
       axios
         .get(`${process.env.REACT_APP_SERVER_URL}/trades`, headerConfig)
         .then((response) => {
-          const sortedData = response.data.slice().sort((a, b) => utilFunction.sortObject(b,a, "exitDate"))
-          setTrades(sortedData)
+          const sortedData = response.data
+            .slice()
+            .sort((a, b) => utilFunction.sortObject(b, a, "exitDate"));
+          setTrades(sortedData);
         })
         .catch((err) => console.log(err));
     }
@@ -58,7 +60,9 @@ function TradesTable(props) {
     if (trades.length > 0) {
       const pnlData = {};
       let prevProfit = 0;
-      const sortedData = trades.slice().sort((a, b) => utilFunction.sortObject(a,b, "exitDate"))
+      const sortedData = trades
+        .slice()
+        .sort((a, b) => utilFunction.sortObject(a, b, "exitDate"));
       sortedData.forEach((trade, idx) => {
         if (
           !Object.keys(pnlData).includes(
@@ -93,14 +97,14 @@ function TradesTable(props) {
       labels: {
         style: {
           colors: useColorModeValue("#000000", "#FFFFFF"),
-      },
+        },
       },
     },
     yaxis: {
       labels: {
         style: {
           colors: useColorModeValue("#000000", "#FFFFFF"),
-      },
+        },
         formatter: function (value) {
           return showSensibleData ? "$" + value : "****";
         },
@@ -131,91 +135,93 @@ function TradesTable(props) {
         />
       </Box>
 
-      <TableContainer overflowX={"scroll"}>
-        <Table variant="simple" size="sm" mt={5}>
-          <Thead>
-            <Tr>
-              <Th textAlign="center">Symbol:</Th>
-              <Th textAlign="center">Name:</Th>
-              <Th textAlign="center">Exchange:</Th>
-              <Th textAlign="center">Type:</Th>
-              <Th textAlign="center">Side:</Th>
-              <Th textAlign="center">Contracts:</Th>
-              <Th textAlign="center">Avg. Entry Price:</Th>
-              <Th textAlign="center">Avg. Exit Price:</Th>
-              <Th textAlign="center">Profit:</Th>
-              <Th textAlign="center">Entry Date:</Th>
-              <Th textAlign="center">Exit Date:</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {trades.map((trade) => {
-              return (
-                <Tr
-                  key={trade._id}
-                  _hover={{ background: hoverBg }}
-                  onClick={() => handleOnCLickRow(trade._id)}
-                >
-                  <Td textAlign="center">{trade.symbol.toUpperCase()}</Td>
-                  <Td textAlign="center">{trade.account.name}</Td>
-                  <Td textAlign="center">{trade.account.exchange}</Td>
-                  <Td textAlign="center">
-                    {trade.type && trade.type.toUpperCase()}
-                  </Td>
-                  <Td textAlign="center">
-                    {trade.side && trade.side.toUpperCase()}
-                  </Td>
-                  <Td textAlign="center">
-                    {showSensibleData ? (
+      <Box overflowX="scroll">
+        <TableContainer>
+          <Table variant="simple" size="sm" mt={5}>
+            <Thead>
+              <Tr>
+                <Th textAlign="center">Symbol</Th>
+                <Th textAlign="center">Name</Th>
+                <Th textAlign="center">Exchange</Th>
+                <Th textAlign="center">Type</Th>
+                <Th textAlign="center">Side</Th>
+                <Th textAlign="center">Contracts</Th>
+                <Th textAlign="center">Entry Price</Th>
+                <Th textAlign="center">Exit Price</Th>
+                <Th textAlign="center">Profit</Th>
+                <Th textAlign="center">Entry Date</Th>
+                <Th textAlign="center">Exit Date</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {trades.map((trade) => {
+                return (
+                  <Tr
+                    key={trade._id}
+                    _hover={{ background: hoverBg }}
+                    onClick={() => handleOnCLickRow(trade._id)}
+                  >
+                    <Td textAlign="center">{trade.symbol.toUpperCase()}</Td>
+                    <Td textAlign="center">{trade.account.name}</Td>
+                    <Td textAlign="center">{trade.account.exchange}</Td>
+                    <Td textAlign="center">
+                      {trade.type && trade.type.toUpperCase()}
+                    </Td>
+                    <Td textAlign="center">
+                      {trade.side && trade.side.toUpperCase()}
+                    </Td>
+                    <Td textAlign="center">
+                      {showSensibleData ? (
+                        <NumberFormat
+                          value={utilFunction.roundNumber(trade.contracts, -4)}
+                          displayType={"text"}
+                          thousandSeparator={true}
+                        />
+                      ) : (
+                        "****"
+                      )}
+                    </Td>
+                    <Td textAlign="center">
                       <NumberFormat
-                        value={utilFunction.roundNumber(trade.contracts, -4)}
-                        displayType={"text"}
-                        thousandSeparator={true}
-                      />
-                    ) : (
-                      "****"
-                    )}
-                  </Td>
-                  <Td textAlign="center">
-                    <NumberFormat
-                      value={utilFunction.roundNumber(trade.avgEntry, -4)}
-                      displayType={"text"}
-                      thousandSeparator={true}
-                      prefix={"$"}
-                    />
-                  </Td>
-                  <Td textAlign="center">
-                    <NumberFormat
-                      value={utilFunction.roundNumber(trade.avgExit, -4)}
-                      displayType={"text"}
-                      thousandSeparator={true}
-                      prefix={"$"}
-                    />
-                  </Td>
-                  <Td textAlign="center">
-                    {showSensibleData ? (
-                      <NumberFormat
-                        value={utilFunction.roundNumber(trade.profit, -4)}
+                        value={utilFunction.roundNumber(trade.avgEntry, -4)}
                         displayType={"text"}
                         thousandSeparator={true}
                         prefix={"$"}
                       />
-                    ) : (
-                      "****"
-                    )}
-                  </Td>
-                  <Td textAlign="center">
-                    {moment(trade.entryDate).format("DD/MM/YY, h:mm a")}
-                  </Td>
-                  <Td textAlign="center">
-                    {moment(trade.exitDate).format("DD/MM/YY, h:mm a")}
-                  </Td>
-                </Tr>
-              );
-            })}
-          </Tbody>
-        </Table>
-      </TableContainer>
+                    </Td>
+                    <Td textAlign="center">
+                      <NumberFormat
+                        value={utilFunction.roundNumber(trade.avgExit, -4)}
+                        displayType={"text"}
+                        thousandSeparator={true}
+                        prefix={"$"}
+                      />
+                    </Td>
+                    <Td textAlign="center">
+                      {showSensibleData ? (
+                        <NumberFormat
+                          value={utilFunction.roundNumber(trade.profit, -4)}
+                          displayType={"text"}
+                          thousandSeparator={true}
+                          prefix={"$"}
+                        />
+                      ) : (
+                        "****"
+                      )}
+                    </Td>
+                    <Td textAlign="center">
+                      {moment(trade.entryDate).format("DD/MM/YY, HH:mm")}
+                    </Td>
+                    <Td textAlign="center">
+                      {moment(trade.exitDate).format("DD/MM/YY, HH:mm")}
+                    </Td>
+                  </Tr>
+                );
+              })}
+            </Tbody>
+          </Table>
+        </TableContainer>
+      </Box>
     </>
   );
 }

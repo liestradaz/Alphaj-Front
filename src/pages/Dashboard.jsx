@@ -18,10 +18,10 @@ function Dashboard(props) {
   return (
     <>
       <Navbar handleLogout={props.handleLogout} user={props.user} />
-      <Flex>
+      <Flex >
         <Sidebar handleLogout={props.handleLogout} user={props.user} />
-        <Box w="100%" ml={10}>
-          <Flex justifyContent="center">
+        <Box w="100%" ml={10} >
+          <Flex justifyContent="center" >
             <Tabs align="center" variant="soft-rounded" mt="5">
               <TabList>
                 <Tab>Margin</Tab>
